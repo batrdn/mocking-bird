@@ -1,0 +1,30 @@
+{
+  "name": "@mocking-bird/graphql",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/graphql/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/graphql",
+        "main": "packages/graphql/src/index.ts",
+        "tsConfig": "packages/graphql/tsconfig.lib.json",
+        "assets": ["packages/graphql/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/graphql/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

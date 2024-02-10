@@ -1,0 +1,30 @@
+{
+  "name": "@mocking-bird/mongoose",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/mongoose/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/mongoose",
+        "main": "packages/mongoose/src/index.ts",
+        "tsConfig": "packages/mongoose/tsconfig.lib.json",
+        "assets": ["packages/mongoose/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/mongoose/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
