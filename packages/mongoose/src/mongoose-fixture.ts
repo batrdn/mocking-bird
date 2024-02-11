@@ -1,25 +1,21 @@
 import { Model, Schema, SchemaType } from 'mongoose';
 import {
-  CoreFixture,
+  AbstractFixture,
   FieldPath,
+  FieldType,
   FixtureOptions,
-  PathFinder,
+  GlobPathFinder,
   Rule,
-  Validator,
   Value,
 } from '@mocking-bird/core';
 import { MongooseTypeMapper } from './mongoose-type-mapper';
 
 export class MongooseFixture<
   T extends Record<string, any>
-> extends CoreFixture<T> {
+> extends AbstractFixture<T> {
   private readonly schema: Schema<T>;
 
   private static readonly ROOT_PATH = 'root';
-
-  private pathfinder: PathFinder;
-  private validator: Validator;
-  private mongooseTypeMapper: MongooseTypeMapper;
 
   /**
    * @param model - The Mongoose model or schema to generate fixtures for.
@@ -29,12 +25,12 @@ export class MongooseFixture<
    * If a schema is provided, it will be used directly.
    */
   constructor(model: Model<T> | Schema<T>) {
-    super();
-    this.schema = this.isModel(model) ? model.schema : model;
+    const pathfinder = new GlobPathFinder();
+    const mongooseTypeMapper = new MongooseTypeMapper();
 
-    this.pathfinder = new PathFinder();
-    this.validator = new Validator();
-    this.mongooseTypeMapper = new MongooseTypeMapper();
+    super(pathfinder, mongooseTypeMapper);
+
+    this.schema = this.isModel(model) ? model.schema : model;
   }
 
   /**
@@ -107,11 +103,15 @@ export class MongooseFixture<
     overrideValues?: Record<FieldPath, Value>,
     rules?: Rule[]
   ): Value | undefined {
+    const rule = this.findRule(path, rules);
+
     const value = this.shouldOverride(path, overrideValues)
       ? this.overrideValue(path, overrideValues)
-      : this.generateMockValue(path, schemaType, rules);
+      : this.generateMockValue(path, schemaType, rule);
 
-    this.validateValue(path, value, schemaType, rules);
+    // TODO: PROBABLY need to cast some types like ObjectId, BigInt etc...
+
+    this.validateValue(path, value, schemaType, rule);
 
     return value;
   }
@@ -119,16 +119,18 @@ export class MongooseFixture<
   private generateMockValue(
     path: string,
     schemaType: SchemaType,
-    rules?: Rule[]
+    rule?: Rule
   ): Value | undefined {
-    const type = this.mongooseTypeMapper.getType(schemaType.instance);
+    const type = this.typeMapper.getType(schemaType.instance);
 
-    if (!type) {
-      console.warn(`Unsupported type: ${schemaType.instance}`);
-      return undefined;
+    if (type === FieldType.ARRAY) {
+      // TODO: handle array type
     }
 
-    return super.generateSingleValue(path, type, rules);
+    // TODO: compare schema rule with custom rule
+    // TODO: create rule from schema
+
+    return this.generateSingleValue(path, type, rule);
   }
 
   private overrideValue(
@@ -139,10 +141,22 @@ export class MongooseFixture<
       return undefined;
     }
 
-    const key = this.pathfinder.find(path, Object.keys(overrideValues));
+    const overrideValuePaths = Object.keys(overrideValues);
 
-    return key && overrideValues.hasOwnProperty(key)
-      ? overrideValues[key]
+    const matchingPaths = this.pathfinder.find(path, overrideValuePaths);
+
+    if (matchingPaths.length > 1) {
+      throw new Error(
+        `Forbidden: multiple override values found for path '${path}': ${matchingPaths.join(
+          ', '
+        )}`
+      );
+    }
+
+    const overrideKey = matchingPaths[0];
+
+    return overrideValues.hasOwnProperty(overrideKey)
+      ? overrideValues[overrideKey]
       : undefined;
   }
 
@@ -150,12 +164,12 @@ export class MongooseFixture<
     path: string,
     value: Value | undefined,
     schemaType: SchemaType,
-    rules?: Rule[]
+    rule?: Rule
   ) {
     this.validateAgainstSchema(path, value, schemaType);
 
-    if (rules?.length) {
-      this.validateAgainstCustomRules(path, value, rules);
+    if (rule) {
+      super.validator.validate(value, rule);
     }
   }
 
@@ -178,39 +192,36 @@ export class MongooseFixture<
     schemaType.validators.forEach((validator) => {
       if (!validator?.validator?.(value)) {
         throw new Error(
-          `Invalid value for field '${path}': ${JSON.stringify(value)}`
+          `Validation failed for field '${path}': ${JSON.stringify(value)}`
         );
       }
     });
   }
 
-  /**
-   *
-   * @param path
-   * @param value
-   * @param rules
-   * @private
-   */
-  private validateAgainstCustomRules(
-    path: string,
-    value: Value | undefined,
-    rules: Rule[]
-  ) {
+  private findRule(path: string, rules: Rule[] | undefined): Rule | undefined {
+    if (!rules) {
+      return undefined;
+    }
+
     const rulePaths = rules.map(({ path }) => path);
 
     if (!this.pathfinder.exists(path, rulePaths)) {
       return;
     }
 
-    const key = this.pathfinder.find(path, rulePaths);
+    const matchingPaths = this.pathfinder.find(path, rulePaths);
 
-    rules.forEach((rule) => {
-      if (rule.path !== key) {
-        return;
-      }
+    if (matchingPaths.length > 1) {
+      throw new Error(
+        `Forbidden: multiple rules found for path '${path}': ${matchingPaths.join(
+          ', '
+        )}`
+      );
+    }
 
-      this.validator.validate(value, rule);
-    });
+    const matchingPath = matchingPaths[0];
+
+    return rules.find((rule) => rule.path === matchingPath);
   }
 
   private isExcluded(

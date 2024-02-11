@@ -146,26 +146,24 @@ describe('Mocking Bird - Mongoose', () => {
       }).toThrow('Cannot exclude required field: firstname');
     });
 
-    it('should throw an error if custom rule is incompatible to schema rule', () => {
-      expect(() => {
-        fixture.generate({}, { rules: [{ path: 'age', min: 100 }] });
-      }).toThrow();
-    });
-
     it('should throw an error if override value is incompatible to schema rule', () => {
       expect(() => {
         fixture.generate({ age: 100 });
-      }).toThrow();
+      }).toThrow("Validation failed for field 'age': 100");
+
+      expect(() => {
+        fixture.generate({ enum: 'D' });
+      }).toThrow("Validation failed for field 'firstname': 100");
     });
 
     it('should throw an error if invalid data type is provided for a field', () => {
       expect(() => {
-        fixture.generate({ age: '100' });
-      }).toThrow();
+        fixture.generate({ age: false });
+      }).toThrow("Validation failed for field 'age': false");
 
       expect(() => {
         fixture.generate({ firstname: 100 });
-      }).toThrow();
+      }).toThrow("Validation failed for field 'firstname': 100");
     });
   });
 
@@ -314,7 +312,7 @@ describe('Mocking Bird - Mongoose', () => {
       }).toThrow();
     });
 
-    it('should throw an error if there is a conflicting glob pattern', () => {
+    it('should throw an error if there is a conflicting glob pattern in override values', () => {
       expect(() => {
         fixture.generate({
           'complexObject.*.name': 'John',
@@ -327,6 +325,26 @@ describe('Mocking Bird - Mongoose', () => {
           'complexObject.child.name': 'John',
           'complexObject.*.name': 'Doe',
         });
+      }).toThrow();
+    });
+
+    it('should throw an error if there is a conflicting glob pattern in custom rules', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'complexObject.*.name',
+                pattern: /John|Doe/,
+              },
+              {
+                path: 'complexObject.child.name',
+                size: 10,
+              },
+            ],
+          }
+        );
       }).toThrow();
     });
   });
