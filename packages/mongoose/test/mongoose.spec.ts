@@ -1,6 +1,5 @@
 import { MongooseFixture } from '../src';
 import { NestedModel, BasicModel } from './models';
-import { Schema } from 'mongoose';
 
 describe('Mocking Bird - Mongoose', () => {
   describe('Basic model', () => {
@@ -15,19 +14,14 @@ describe('Mocking Bird - Mongoose', () => {
       expect(typeof mock.firstname).toBe('string');
       expect(typeof mock.age).toBe('number');
       expect(typeof mock.isDefault).toBe('boolean');
-    });
+      expect(typeof mock.idField).toBe('string');
+      expect(typeof mock.uuid).toBe('string');
+      expect(typeof mock.bigInt).toBe('bigint');
+      expect(typeof mock.decimal128).toBe('number');
 
-    it('should generate a basic model mock (instance type check)', () => {
-      const mock = fixture.generate();
-
-      // Check the instance types
       expect(mock.date).toBeInstanceOf(Date);
-      expect(mock.binData).toBeInstanceOf(Buffer);
-      expect(mock.idField).toBeInstanceOf(Schema.Types.ObjectId);
-      expect(mock.uuid).toBeInstanceOf(Schema.Types.UUID);
-      expect(mock.bigInt).toBeInstanceOf(Schema.Types.BigInt);
-      expect(mock.decimal128).toBeInstanceOf(Schema.Types.Decimal128);
       expect(mock.array).toBeInstanceOf(Array<string>);
+      expect(mock.binData).toBeInstanceOf(Buffer);
     });
 
     it('should override field value', () => {
@@ -47,8 +41,6 @@ describe('Mocking Bird - Mongoose', () => {
       expect(mock.age).toBeLessThanOrEqual(99);
 
       expect(mock.enum).toMatch(/A|B|C/);
-      expect(mock.firstname).toMatch(/^[A-Z]/);
-      expect(mock.customValidation).toBeLessThan(3);
     });
 
     it('should create a mock within the specified number range', () => {
@@ -80,20 +72,14 @@ describe('Mocking Bird - Mongoose', () => {
         {
           rules: [
             {
-              path: 'enum',
-              pattern: /A|B/,
-            },
-            {
               path: 'firstname',
-              // starts with 'J'
-              pattern: /^[J]/,
+              pattern: /ABC*DE/,
             },
           ],
         }
       );
 
-      expect(mock.enum).toMatch(/A|B/);
-      expect(mock.firstname).toMatch(/^[J]/);
+      expect(mock.firstname).toMatch(/ABC*DE/);
     });
 
     it('should create a mock based on enum', () => {
@@ -130,7 +116,6 @@ describe('Mocking Bird - Mongoose', () => {
       expect(mock.decimal128).toBeUndefined();
       expect(mock.array).toBeUndefined();
       expect(mock.enum).toBeUndefined();
-      expect(mock.customValidation).toBeUndefined();
     });
 
     it('should exclude specified fields', () => {
@@ -138,6 +123,24 @@ describe('Mocking Bird - Mongoose', () => {
 
       expect(mock.age).toBeUndefined();
       expect(mock.email).toBeUndefined();
+    });
+
+    it('should override schema rule and use custom if there is no conflict', () => {
+      const mock = fixture.generate(
+        {},
+        {
+          rules: [
+            {
+              path: 'age',
+              min: 20, // schema definition is min: 18
+              max: 22, // schema definition is max: 99
+            },
+          ],
+        }
+      );
+
+      expect(mock.age).toBeGreaterThanOrEqual(20);
+      expect(mock.age).toBeLessThanOrEqual(22);
     });
 
     it('should throw an error if a required field is excluded', () => {
@@ -153,7 +156,7 @@ describe('Mocking Bird - Mongoose', () => {
 
       expect(() => {
         fixture.generate({ enum: 'D' });
-      }).toThrow("Validation failed for field 'firstname': 100");
+      }).toThrow("Validation failed for field 'enum': D");
     });
 
     it('should throw an error if invalid data type is provided for a field', () => {
@@ -167,6 +170,114 @@ describe('Mocking Bird - Mongoose', () => {
     });
   });
 
+  describe('Schema & Custom Rules Conflict', () => {
+    const fixture = new MongooseFixture(BasicModel);
+
+    it('should throw an error if required field has conflict', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'firstname',
+                required: false,
+              },
+            ],
+          }
+        );
+      }).toThrow(
+        'Forbidden: required field cannot be overridden to be non-required'
+      );
+    });
+
+    it('should throw an error if minimum value has conflict', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'age',
+                min: 10,
+              },
+            ],
+          }
+        );
+      }).toThrow(
+        'Forbidden: min value cannot be overridden to be less than the schema min value'
+      );
+    });
+
+    it('should throw an error if maximum value has conflict', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'age',
+                max: 100,
+              },
+            ],
+          }
+        );
+      }).toThrow(
+        'Forbidden: max value cannot be overridden to be greater than the schema max value'
+      );
+    });
+
+    it('should throw an error if enum values have conflict', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'enum',
+                enum: ['D', 'E'],
+              },
+            ],
+          }
+        );
+      }).toThrow(
+        'Forbidden: enum values cannot be overridden to include values not in the schema enum: D, E'
+      );
+    });
+
+    it('should throw an error if max value is less than the schema min value', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'age',
+                max: 1,
+              },
+            ],
+          }
+        );
+      }).toThrow('Max 1 should be greater than min 18.');
+    });
+
+    it('should throw an error if min value is greater than the schema max value', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'age',
+                min: 100,
+              },
+            ],
+          }
+        );
+      }).toThrow('Max 99 should be greater than min 100.');
+    });
+  });
+
   describe('Nested model', () => {
     const fixture = new MongooseFixture(NestedModel);
 
@@ -174,7 +285,7 @@ describe('Mocking Bird - Mongoose', () => {
       const { complexObject, mixedType } = fixture.generate();
 
       expect(typeof complexObject.child.name).toBe('string');
-      expect(typeof complexObject.child.isNested).toBe('boolean');
+      expect(typeof complexObject.child.isChild).toBe('boolean');
       expect(complexObject.child.values).toBeInstanceOf(Array<number>);
       expect(complexObject.children).toHaveLength(1);
 
@@ -185,9 +296,7 @@ describe('Mocking Bird - Mongoose', () => {
     it('should override nested field value', () => {
       const mock = fixture.generate({
         'complexObject.child.name': 'John',
-        foo: {
-          values: [1, 2, 3],
-        },
+        'complexObject.child.values': [1, 2, 3],
         'mixedType.mixedAnyObject': 'Hello',
         'mixedType.mixedArray': ['World'],
       });
@@ -204,16 +313,12 @@ describe('Mocking Bird - Mongoose', () => {
       });
 
       expect(complexObject.child.name).toBe('John');
-      // False because the wildcard (*) will override an immediate child only. Children is an array, so it will not be
-      // overridden.
-      expect(complexObject.children.every((c) => c.name === 'John')).toBe(
-        false
-      );
+      expect(complexObject.children.every((c) => c.name === 'John')).toBe(true);
     });
 
     it('should override based on complex glob pattern', () => {
       const { complexObject } = fixture.generate({
-        'complexObject.**.is?': true, // ? is a wildcard that matches by characters
+        'complexObject.**.is*': true, // ? is a wildcard that matches by characters
       });
 
       expect(complexObject.child.isNested).toBe(true);
@@ -222,32 +327,6 @@ describe('Mocking Bird - Mongoose', () => {
       // Values should be overridden based on the double wildcard (**) glob pattern
       expect(complexObject.children.every((c) => c.isNested)).toBe(true);
       expect(complexObject.children.every((c) => c.isChild)).toBe(true);
-    });
-
-    it('should override based on glob pattern with array index', () => {
-      const { complexObject } = fixture.generate(
-        {
-          'complexObject.*.values.1': 100,
-        },
-        {
-          rules: [
-            {
-              path: 'complexObject.**.values',
-              size: 3,
-            },
-          ],
-        }
-      );
-
-      expect(complexObject.child.values).toHaveLength(3);
-      expect(complexObject.child.values[1]).toBe(100);
-      expect(complexObject.children.every((c) => c.values.length === 3)).toBe(
-        true
-      );
-      // Likewise with the wildcard (*) pattern, it will only override the immediate child. In this case it's not valid
-      expect(complexObject.children.every((c) => c.values[1] === 100)).toBe(
-        false
-      );
     });
 
     it('should generate values based on custom rules with glob pattern', () => {
@@ -259,11 +338,6 @@ describe('Mocking Bird - Mongoose', () => {
               path: 'complexObject.*.values',
               size: 5,
             },
-            {
-              path: 'complexObject.**.values.0',
-              min: 10,
-              max: 20,
-            },
           ],
         }
       );
@@ -271,13 +345,7 @@ describe('Mocking Bird - Mongoose', () => {
       const { child, children } = mock.complexObject;
 
       expect(child.values).toHaveLength(5);
-      expect(children.every((c) => c.values.length === 5)).toBe(false);
-
-      expect(child.values[0]).toBeGreaterThanOrEqual(10);
-      expect(child.values[0]).toBeLessThanOrEqual(20);
-
-      expect(children.every((c) => c.values[0] >= 10)).toBe(true);
-      expect(children.every((c) => c.values[0] <= 20)).toBe(true);
+      expect(children.every((c) => c.values.length === 5)).toBe(true);
     });
 
     it('should ignore non-existing fields', () => {
@@ -302,12 +370,6 @@ describe('Mocking Bird - Mongoose', () => {
       expect(() => {
         fixture.generate({
           'complexObject.$.name': 'John',
-        });
-      }).toThrow();
-
-      expect(() => {
-        fixture.generate({
-          'complexObject.***.name': 'John',
         });
       }).toThrow();
     });

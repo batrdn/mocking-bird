@@ -1,21 +1,26 @@
-import { FieldPath, FieldType, FixtureOptions, Rule, Value } from './types';
+import {FieldPath, FieldType, FixtureOptions, NonArrayFieldType, Rule, Value} from './types';
 import { AbstractTypeMapper } from './abstract-type-mapper';
 import { Validator } from './validator';
 import { AbstractPathFinder } from './path-finder';
-import { faker } from '@faker-js/faker';
+import { FakerApi } from './faker';
 
 export abstract class AbstractFixture<T> {
+  private readonly fakerApi: FakerApi;
+
   protected pathfinder: AbstractPathFinder;
   protected typeMapper: AbstractTypeMapper;
   protected validator: Validator;
 
   protected constructor(
     pathfinder: AbstractPathFinder,
-    typeMapper: AbstractTypeMapper
+    typeMapper: AbstractTypeMapper,
+    validator?: Validator
   ) {
     this.pathfinder = pathfinder;
     this.typeMapper = typeMapper;
-    this.validator = new Validator();
+    this.validator = validator ? validator : new Validator();
+
+    this.fakerApi = new FakerApi();
   }
 
   abstract generate(
@@ -24,12 +29,44 @@ export abstract class AbstractFixture<T> {
   ): T;
 
   protected generateSingleValue(
-    fieldPath: string,
-    type: FieldType,
-    rule?: Rule,
-    arrayType?: Exclude<FieldType, FieldType.ARRAY>
+    fieldPath: FieldPath,
+    type: NonArrayFieldType,
+    rule?: Rule
   ): Value {
+    this.validatePath(fieldPath);
+    const field = this.getRelevantField(fieldPath);
 
-    return faker.number.int();
+    return this.fakerApi.generate(field, type, rule);
+  }
+
+  protected generateArrayValue(
+    fieldPath: FieldPath,
+    type: NonArrayFieldType,
+    rule?: Rule
+  ): Value[] {
+    this.validatePath(fieldPath);
+
+    if (rule?.size) {
+      return Array.from({ length: rule.size }, () =>
+        this.fakerApi.generate(this.getRelevantField(fieldPath), type, rule)
+      );
+    }
+
+    return [this.fakerApi.generate(this.getRelevantField(fieldPath), type, rule)];
+  }
+
+  private validatePath(path: FieldPath): void {
+    if (!this.pathfinder.isValidPath(path)) {
+      throw new Error(`Invalid path: ${path}`);
+    }
+  }
+
+  private getRelevantField(path: FieldPath): string {
+    const relevantPath = path.split('.').pop();
+    if (!relevantPath) {
+      throw new Error(`Invalid path: ${path}`);
+    }
+
+    return relevantPath;
   }
 }

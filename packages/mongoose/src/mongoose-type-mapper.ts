@@ -1,4 +1,8 @@
-import { AbstractTypeMapper, FieldType } from '@mocking-bird/core';
+import {
+  AbstractTypeMapper,
+  FieldType,
+  NonArrayFieldType,
+} from '@mocking-bird/core';
 
 export class MongooseTypeMapper extends AbstractTypeMapper {
   private static readonly SUPPORTED_TYPES = [
@@ -22,7 +26,7 @@ export class MongooseTypeMapper extends AbstractTypeMapper {
 
     switch (type) {
       case 'ObjectId':
-        return FieldType.HEXSTRING;
+        return FieldType.MONGO_DB_ID;
       case 'String':
         return FieldType.STRING;
       case 'Number':
@@ -48,6 +52,14 @@ export class MongooseTypeMapper extends AbstractTypeMapper {
       default:
         throw new Error(`Unsupported type: ${type}`);
     }
+  }
+
+  getArrayType(type: string): NonArrayFieldType {
+    if (type === 'Array') {
+      throw new Error('Unsupported type: Array');
+    }
+
+    return this.getType(type) as NonArrayFieldType;
   }
 
   private validateType(type: string): void {

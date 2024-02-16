@@ -1,8 +1,11 @@
 export abstract class AbstractPathFinder {
-  abstract find(
-    pathToFind: string,
-    paths: string[]
-  ): string[];
+  abstract createPath(rootPath: string, subPath: string): string;
 
-  abstract exists(pathToFind: string, paths: string[]): boolean;
+  abstract findPatterns(path: string, patterns: string[]): string[];
+
+  abstract exists(path: string, patterns: string[]): boolean;
+
+  abstract isValidPath(path: string): boolean;
+
+  abstract validatePaths(paths: string[]): void;
 }

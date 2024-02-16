@@ -25,6 +25,7 @@ export interface INestedDocument {
 const ChildSchema = new Schema({
   name: String,
   isChild: Boolean,
+  isNested: Boolean,
   values: [Number],
 });
 

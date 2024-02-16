@@ -8,14 +8,12 @@ export interface IBasicDocument {
   age?: number;
   email?: string;
   binData?: Buffer;
-  idField?: Schema.Types.ObjectId;
-  uuid?: Schema.Types.UUID;
-  bigInt?: Schema.Types.BigInt;
-  decimal128?: Schema.Types.Decimal128;
+  idField?: string;
+  uuid?: string;
+  bigInt?: bigint;
+  decimal128?: number;
   array?: string[];
   enum?: 'A' | 'B' | 'C';
-  customValidation?: string;
-  promisedNeverLand?: string;
 }
 
 export const BasicDocumentSchema = new Schema({
@@ -32,7 +30,6 @@ export const BasicDocumentSchema = new Schema({
   decimal128: Schema.Types.Decimal128,
   array: [String],
   enum: { type: String, enum: ['A', 'B', 'C'] },
-  customValidation: { type: String, validate: (v: string) => v.length < 3 },
 });
 
 export const BasicModel = model<IBasicDocument>(

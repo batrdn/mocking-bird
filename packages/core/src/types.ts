@@ -1,3 +1,14 @@
+export type Value = string | number | bigint | boolean | Date | Buffer | object;
+
+export type FieldPath = string;
+
+export type FakerCandidate = {
+  type: FieldType;
+  function: string;
+  module: string;
+  callback: (rule?: Rule) => Value;
+};
+
 export enum FieldType {
   STRING = 'string',
   NUMBER = 'number',
@@ -7,12 +18,12 @@ export enum FieldType {
   DATE = 'date',
   BUFFER = 'buffer',
   ARRAY = 'array',
-  HEXSTRING = 'hexstring',
+  MONGO_DB_ID = 'mongo_db_id',
   UUID = 'uuid',
   OBJECT = 'object',
 }
 
-export type Value = string | number | bigint | boolean | Date | Buffer | object;
+export type NonArrayFieldType = Exclude<FieldType, FieldType.ARRAY>;
 
 export type Rule = {
   path: FieldPath;
@@ -23,11 +34,6 @@ export type Rule = {
   enum?: (string | number)[];
   pattern?: RegExp;
 };
-
-/**
- * TODO: Explain
- */
-export type FieldPath = string;
 
 export interface FixtureOptions {
   rules?: Rule[];
