@@ -74,8 +74,6 @@ export class Validator {
       rule.pattern &&
       !rule.pattern.test(value)
     ) {
-      console.log('Pattern', rule.pattern);
-      console.log('Value', value);
       throw new Error(`Value '${value}' does not match the required pattern`);
     }
   }

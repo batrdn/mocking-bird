@@ -117,7 +117,7 @@ export class MongooseFixture<
           subPath,
           schemaType,
           overrideValues,
-          options?.rules
+          options
         );
       }
 
@@ -131,13 +131,13 @@ export class MongooseFixture<
     path: FieldPath,
     schemaType: SchemaType,
     overrideValues?: Record<FieldPath, Value>,
-    rules?: Rule[]
+    options?: FixtureOptions
   ): Value | undefined {
-    const rule = this.findRule(path, rules);
+    const rule = this.findRule(path, options?.rules);
 
     const value = this.shouldOverride(path, overrideValues)
       ? this.overrideValue(path, overrideValues)
-      : this.generateMockValue(path, schemaType, rule);
+      : this.generateMockValue(path, schemaType, rule, options?.useSmartSearch);
 
     this.mongooseValidator.validateValue(path, value, schemaType, rule);
 
@@ -147,7 +147,8 @@ export class MongooseFixture<
   private generateMockValue(
     path: FieldPath,
     schemaType: SchemaType,
-    rule?: Rule
+    rule?: Rule,
+    useSmartSearch = true
   ): Value | undefined {
     const type = this.typeMapper.getType(schemaType.instance);
     const combinedRule = this.mongooseValidator.combineRules(
@@ -162,12 +163,13 @@ export class MongooseFixture<
         ? this.generateArrayValue(
             path,
             this.typeMapper.getArrayType(caster.instance),
-            combinedRule
+            combinedRule,
+            useSmartSearch
           )
         : undefined;
     }
 
-    return this.generateSingleValue(path, type, combinedRule);
+    return this.generateSingleValue(path, type, combinedRule, useSmartSearch);
   }
 
   private overrideValue(

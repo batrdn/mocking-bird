@@ -2,11 +2,11 @@ export type Value = string | number | bigint | boolean | Date | Buffer | object;
 
 export type FieldPath = string;
 
+export type FakerCallback = (rule?: Rule) => Value;
+
 export type FakerCandidate = {
-  type: FieldType;
-  function: string;
-  module: string;
-  callback: (rule?: Rule) => Value;
+  method: string | undefined;
+  callback: FakerCallback;
 };
 
 export enum FieldType {
@@ -39,4 +39,5 @@ export interface FixtureOptions {
   rules?: Rule[];
   exclude?: FieldPath[];
   requiredOnly?: boolean;
+  useSmartSearch?: boolean;
 }

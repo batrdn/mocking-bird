@@ -1,4 +1,11 @@
-import {FieldPath, FieldType, FixtureOptions, NonArrayFieldType, Rule, Value} from './types';
+import {
+  FieldPath,
+  FieldType,
+  FixtureOptions,
+  NonArrayFieldType,
+  Rule,
+  Value,
+} from './types';
 import { AbstractTypeMapper } from './abstract-type-mapper';
 import { Validator } from './validator';
 import { AbstractPathFinder } from './path-finder';
@@ -31,28 +38,42 @@ export abstract class AbstractFixture<T> {
   protected generateSingleValue(
     fieldPath: FieldPath,
     type: NonArrayFieldType,
-    rule?: Rule
+    rule?: Rule,
+    useSmartSearch = true
   ): Value {
     this.validatePath(fieldPath);
     const field = this.getRelevantField(fieldPath);
 
-    return this.fakerApi.generate(field, type, rule);
+    return this.fakerApi.generate(field, type, rule, useSmartSearch);
   }
 
   protected generateArrayValue(
     fieldPath: FieldPath,
     type: NonArrayFieldType,
-    rule?: Rule
+    rule?: Rule,
+    useSmartSearch = true
   ): Value[] {
     this.validatePath(fieldPath);
 
     if (rule?.size) {
       return Array.from({ length: rule.size }, () =>
-        this.fakerApi.generate(this.getRelevantField(fieldPath), type, rule)
+        this.fakerApi.generate(
+          this.getRelevantField(fieldPath),
+          type,
+          rule,
+          useSmartSearch
+        )
       );
     }
 
-    return [this.fakerApi.generate(this.getRelevantField(fieldPath), type, rule)];
+    return [
+      this.fakerApi.generate(
+        this.getRelevantField(fieldPath),
+        type,
+        rule,
+        useSmartSearch
+      ),
+    ];
   }
 
   private validatePath(path: FieldPath): void {
