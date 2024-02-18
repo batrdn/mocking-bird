@@ -1,11 +1,11 @@
 {
   "name": "@mocking-bird/mongoose",
   "version": "0.0.1",
-  "dependencies": {},
   "peerDependencies": {
     "mongoose": ">=6"
   },
   "devDependencies": {
+    "@testcontainers/mongodb": "^10.7.1",
     "@types/mongoose": "^5.11.97"
   },
   "type": "commonjs",

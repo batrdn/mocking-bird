@@ -5,7 +5,8 @@ export type FieldPath = string;
 export type FakerCallback = (rule?: Rule) => Value;
 
 export type FakerCandidate = {
-  method: string | undefined;
+  type: NonArrayFieldType;
+  method: string;
   callback: FakerCallback;
 };
 
@@ -39,5 +40,5 @@ export interface FixtureOptions {
   rules?: Rule[];
   exclude?: FieldPath[];
   requiredOnly?: boolean;
-  useSmartSearch?: boolean;
+  isAccurate?: boolean;
 }

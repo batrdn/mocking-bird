@@ -1,10 +1,11 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate } from '@mocking-bird/core';
+import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
 export class SystemModule extends AbstractFakerModule {
   private fileName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'fileName',
       callback: () => faker.system.fileName(),
     };
@@ -12,6 +13,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private commonFileName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'commonFileName',
       callback: () => faker.system.commonFileName(),
     };
@@ -19,6 +21,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private mimeType(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'mimeType',
       callback: () => faker.system.mimeType(),
     };
@@ -26,6 +29,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private commonFileType(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'commonFileType',
       callback: () => faker.system.commonFileType(),
     };
@@ -33,6 +37,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private commonFileExt(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'commonFileExt',
       callback: () => faker.system.commonFileExt(),
     };
@@ -40,6 +45,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private fileType(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'fileType',
       callback: () => faker.system.fileType(),
     };
@@ -47,6 +53,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private fileExt(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'fileExt',
       callback: () => faker.system.fileExt(),
     };
@@ -54,6 +61,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private semver(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'semver',
       callback: () => faker.system.semver(),
     };
@@ -61,6 +69,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private directoryPath(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'directoryPath',
       callback: () => faker.system.directoryPath(),
     };
@@ -68,6 +77,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private filePath(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'filePath',
       callback: () => faker.system.filePath(),
     };
@@ -75,6 +85,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private networkProtocol(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'networkProtocol',
       callback: () => faker.system.networkInterface(),
     };
@@ -82,6 +93,7 @@ export class SystemModule extends AbstractFakerModule {
 
   private cron(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'cron',
       callback: () => faker.system.cron(),
     };

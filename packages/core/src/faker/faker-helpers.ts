@@ -15,9 +15,15 @@ export class FakerHelpers {
 
     if (rule?.min && rule?.max) {
       return {
-        min: rule?.min,
-        max: rule?.max,
+        length: {
+          min: rule?.min,
+          max: rule?.max
+        },
       };
+    }
+
+    if (rule?.min || rule?.max) {
+      return { length: rule.min || rule.max };
     }
 
     return undefined;

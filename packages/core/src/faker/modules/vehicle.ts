@@ -1,10 +1,11 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate } from '@mocking-bird/core';
+import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
 export class VehicleModule extends AbstractFakerModule {
   private vehicle(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'vehicle',
       callback: () => faker.vehicle.vehicle(),
     };
@@ -12,6 +13,7 @@ export class VehicleModule extends AbstractFakerModule {
 
   private manufacturer(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'manufacturer',
       callback: () => faker.vehicle.manufacturer(),
     };
@@ -19,6 +21,7 @@ export class VehicleModule extends AbstractFakerModule {
 
   private model(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'vehicleModel',
       callback: () => faker.vehicle.model(),
     };
@@ -26,6 +29,7 @@ export class VehicleModule extends AbstractFakerModule {
 
   private type(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'vehicleType',
       callback: () => faker.vehicle.type(),
     };
@@ -33,6 +37,7 @@ export class VehicleModule extends AbstractFakerModule {
 
   private fuel(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'fuel',
       callback: () => faker.vehicle.fuel(),
     };
@@ -40,6 +45,7 @@ export class VehicleModule extends AbstractFakerModule {
 
   private bicycle(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'bicycle',
       callback: () => faker.vehicle.bicycle(),
     };

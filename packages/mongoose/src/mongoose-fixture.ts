@@ -14,6 +14,12 @@ import { MongooseValidator } from './mongoose-validator';
 export class MongooseFixture<
   T extends Record<string, any>
 > extends AbstractFixture<T> {
+  private static readonly globalOptions: FixtureOptions = {};
+
+  private static readonly NESTED_SCHEMA_INSTANCE = 'Embedded';
+  private static readonly ARRAY_SCHEMA_INSTANCE = 'Array';
+  private static readonly VERSION_KEY = '__v';
+
   private readonly schema: Schema<T>;
   private readonly mongooseValidator: MongooseValidator;
 
@@ -35,34 +41,41 @@ export class MongooseFixture<
     this.mongooseValidator = mongooseValidator;
   }
 
-  /**
-   * Generates a fixture for the given schema.
-   *
-   * @param overrideValues
-   * @param options
-   */
-  generate(
+  static setGlobalOptions(options: FixtureOptions): void {
+    Object.assign(MongooseFixture.globalOptions, options);
+  }
+
+  override bulkGenerate(
+    size: number,
+    overrideValues?: Record<FieldPath, Value>,
+    options?: FixtureOptions
+  ): T[] {
+    const combinedOptions = this.preGeneration(overrideValues, options);
+
+    return Array.from({ length: size }, () =>
+      this.recursivelyGenerateValue(
+        this.schema as Schema,
+        undefined,
+        overrideValues,
+        combinedOptions
+      )
+    );
+  }
+
+  override generate(
     overrideValues?: Record<FieldPath, Value>,
     options?: FixtureOptions
   ): T {
-    this.validatePaths(overrideValues, options);
+    const combinedOptions = this.preGeneration(overrideValues, options);
 
     return this.recursivelyGenerateValue(
       this.schema as Schema,
       undefined,
       overrideValues,
-      options
+      combinedOptions
     );
   }
 
-  /**
-   *
-   * @param rootPath
-   * @param schemaNode
-   * @param overrideValues
-   * @param options
-   * @private
-   */
   private recursivelyGenerateValue(
     schemaNode: Schema<T>,
     rootPath: FieldPath | undefined,
@@ -72,59 +85,99 @@ export class MongooseFixture<
     const generated = {};
 
     schemaNode.eachPath((path, schemaType) => {
-      let generatedValue;
+      if (this.isExcluded(path, schemaType, options)) {
+        return;
+      }
+
       const subPath = rootPath
         ? this.pathfinder.createPath(rootPath, path)
         : path;
 
-      if (schemaType.schema && schemaType.instance === 'Embedded') {
-        generatedValue = this.recursivelyGenerateValue(
-          schemaType.schema,
-          subPath,
-          overrideValues,
-          options
-        );
-      } else if (schemaType.schema && schemaType.instance === 'Array') {
-        const rule = this.findRule(subPath, options?.rules);
-
-        if (rule?.size) {
-          generatedValue = Array.from({ length: rule.size }, () =>
-            this.recursivelyGenerateValue(
-              schemaType.schema,
-              subPath,
-              overrideValues,
-              options
-            )
-          );
-        } else {
-          generatedValue = [
-            this.recursivelyGenerateValue(
-              schemaType.schema,
-              subPath,
-              overrideValues,
-              options
-            ),
-          ];
-        }
-      } else {
-        const isExcluded = this.isExcluded(subPath, schemaType, options);
-
-        if (isExcluded) {
-          return;
-        }
-
-        generatedValue = this.generateValue(
-          subPath,
-          schemaType,
-          overrideValues,
-          options
-        );
-      }
+      const generatedValue = this.generateValueForSchemaType(
+        subPath,
+        schemaType,
+        overrideValues,
+        options
+      );
 
       Object.assign(generated, { [path]: generatedValue });
     });
 
     return generated as T;
+  }
+
+  private generateValueForSchemaType(
+    path: FieldPath,
+    schemaType: SchemaType,
+    overrideValues?: Record<FieldPath, Value>,
+    options?: FixtureOptions
+  ): Value | undefined {
+    if (schemaType.schema) {
+      return this.generateValueForNestedSchema(
+        path,
+        schemaType,
+        overrideValues,
+        options
+      );
+    }
+
+    return this.generateValue(path, schemaType, overrideValues, options);
+  }
+
+  private generateValueForNestedSchema(
+    path: FieldPath,
+    schemaType: SchemaType,
+    overrideValues?: Record<FieldPath, Value>,
+    options?: FixtureOptions
+  ): Value | undefined {
+    if (schemaType.instance === MongooseFixture.NESTED_SCHEMA_INSTANCE) {
+      return this.recursivelyGenerateValue(
+        schemaType.schema,
+        path,
+        overrideValues,
+        options
+      );
+    }
+
+    if (schemaType.instance === MongooseFixture.ARRAY_SCHEMA_INSTANCE) {
+      return this.generateValueForSchemaArray(
+        path,
+        schemaType,
+        overrideValues,
+        options
+      );
+    }
+
+    return undefined;
+  }
+
+  private generateValueForSchemaArray(
+    path: FieldPath,
+    schemaType: SchemaType,
+    overrideValues?: Record<FieldPath, Value>,
+    options?: FixtureOptions
+  ): Value[] {
+    const rule = this.pathfinder.findRule(path, options?.rules);
+
+    if (rule?.size) {
+      return Array.from({ length: rule.size }, () =>
+        this.recursivelyGenerateValue(
+          schemaType.schema,
+          path,
+          overrideValues,
+          options
+        )
+      );
+    }
+
+    return [
+      this.recursivelyGenerateValue(
+        schemaType.schema,
+        path,
+        overrideValues,
+        options
+      ),
+    ];
   }
 
   private generateValue(
@@ -133,11 +186,11 @@ export class MongooseFixture<
     overrideValues?: Record<FieldPath, Value>,
     options?: FixtureOptions
   ): Value | undefined {
-    const rule = this.findRule(path, options?.rules);
+    const rule = this.pathfinder.findRule(path, options?.rules);
 
     const value = this.shouldOverride(path, overrideValues)
       ? this.overrideValue(path, overrideValues)
-      : this.generateMockValue(path, schemaType, rule, options?.useSmartSearch);
+      : this.generateMockValue(path, schemaType, rule, options?.isAccurate);
 
     this.mongooseValidator.validateValue(path, value, schemaType, rule);
 
@@ -148,7 +201,7 @@ export class MongooseFixture<
     path: FieldPath,
     schemaType: SchemaType,
     rule?: Rule,
-    useSmartSearch = true
+    isAccurate = true
   ): Value | undefined {
     const type = this.typeMapper.getType(schemaType.instance);
     const combinedRule = this.mongooseValidator.combineRules(
@@ -164,12 +217,12 @@ export class MongooseFixture<
             path,
             this.typeMapper.getArrayType(caster.instance),
             combinedRule,
-            useSmartSearch
+            isAccurate
           )
         : undefined;
     }
 
-    return this.generateSingleValue(path, type, combinedRule, useSmartSearch);
+    return this.generateSingleValue(path, type, combinedRule, isAccurate);
   }
 
   private overrideValue(
@@ -201,32 +254,18 @@ export class MongooseFixture<
       : undefined;
   }
 
-  private findRule(
-    path: FieldPath,
-    rules: Rule[] | undefined
-  ): Rule | undefined {
-    if (!rules) {
-      return undefined;
+  private preGeneration(
+    overrideValues?: Record<FieldPath, Value>,
+    options?: FixtureOptions
+  ): FixtureOptions {
+    const extractedPaths = this.extractPaths(overrideValues, options);
+    this.pathfinder.validatePaths(extractedPaths);
+
+    if (!options) {
+      return MongooseFixture.globalOptions;
     }
 
-    const rulePaths = rules.map(({ path }) => path);
-    const matchingPatterns = this.pathfinder.findPatterns(path, rulePaths);
-
-    if (matchingPatterns.length === 0) {
-      return undefined;
-    }
-
-    if (matchingPatterns.length > 1) {
-      throw new Error(
-        `Forbidden: multiple rules found for path '${path}': ${matchingPatterns.join(
-          ', '
-        )}`
-      );
-    }
-
-    const pattern = matchingPatterns[0];
-
-    return rules.find((rule) => rule.path === pattern);
+    return Object.assign({}, MongooseFixture.globalOptions, options);
   }
 
   private isExcluded(
@@ -234,8 +273,9 @@ export class MongooseFixture<
     schemaType: SchemaType,
     options?: FixtureOptions
   ): boolean {
-    // Immediately return true if only required fields are needed and the current field is not required
-    if (options?.requiredOnly && !schemaType.isRequired) {
+    // Immediately return true if only required fields are needed and the current field is not required.
+    // Also, return true if the current field is the version key (__v).
+    if (path === MongooseFixture.VERSION_KEY || options?.requiredOnly && !schemaType.isRequired) {
       return true;
     }
 
@@ -262,25 +302,15 @@ export class MongooseFixture<
     );
   }
 
-  private validatePaths(
+  private extractPaths(
     overrideValues: Record<FieldPath, Value> | undefined,
     options: FixtureOptions | undefined
-  ) {
-    const paths = [];
+  ): FieldPath[] {
+    const overridePaths = overrideValues ? Object.keys(overrideValues) : [];
+    const excludePaths = options?.exclude || [];
+    const rulePaths = options?.rules?.map(({ path }) => path) || [];
 
-    if (overrideValues) {
-      paths.push(...Object.keys(overrideValues));
-    }
-
-    if (options?.exclude?.length) {
-      paths.push(...options.exclude);
-    }
-
-    if (options?.rules?.length) {
-      paths.push(...options.rules.map(({ path }) => path));
-    }
-
-    this.pathfinder.validatePaths(paths);
+    return [...overridePaths, ...excludePaths, ...rulePaths];
   }
 
   private isModel(model: Model<T> | Schema<T>): model is Model<T> {

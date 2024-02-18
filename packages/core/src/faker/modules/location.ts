@@ -1,18 +1,20 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate } from '@mocking-bird/core';
+import { FakerCandidate, FieldType } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
 
 export class LocationModule extends AbstractFakerModule {
   private zipCode(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'zipCode',
-      callback: (rule) => faker.location.zipCode(),
+      callback: () => faker.location.zipCode(),
     };
   }
 
   private city(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'city',
       callback: () => faker.location.city(),
     };
@@ -20,13 +22,23 @@ export class LocationModule extends AbstractFakerModule {
 
   private buildingNumber(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'buildingNumber',
       callback: () => faker.location.buildingNumber(),
     };
   }
 
+  private buildingNumberInt(): FakerCandidate {
+    return {
+      type: FieldType.NUMBER,
+      method: 'buildingNumber',
+      callback: () => this.convertToInt(faker.location.buildingNumber()),
+    };
+  }
+
   private street(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'street',
       callback: () => faker.location.street(),
     };
@@ -34,6 +46,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private streetAddress(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'streetAddress',
       callback: () => faker.location.streetAddress(),
     };
@@ -41,6 +54,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private country(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'country',
       callback: () => faker.location.country(),
     };
@@ -48,6 +62,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private countryCode(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'countryCode',
       callback: () => faker.location.countryCode(),
     };
@@ -55,6 +70,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private state(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'state',
       callback: () => faker.location.state(),
     };
@@ -62,6 +78,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private latitude(): FakerCandidate {
     return {
+      type: FieldType.NUMBER,
       method: 'latitude',
       callback: (rule) =>
         faker.location.latitude(FakerHelpers.getMinMaxRule(rule)),
@@ -70,6 +87,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private longitude(): FakerCandidate {
     return {
+      type: FieldType.NUMBER,
       method: 'longitude',
       callback: (rule) =>
         faker.location.longitude(FakerHelpers.getMinMaxRule(rule)),
@@ -78,6 +96,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private direction(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'direction',
       callback: () => faker.location.direction(),
     };
@@ -85,6 +104,7 @@ export class LocationModule extends AbstractFakerModule {
 
   private cardinalDirection(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'cardinalDirection',
       callback: () => faker.location.cardinalDirection(),
     };
@@ -92,20 +112,15 @@ export class LocationModule extends AbstractFakerModule {
 
   private ordinalDirection(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'ordinalDirection',
       callback: () => faker.location.ordinalDirection(),
     };
   }
 
-  private nearbyGPSCoordinate(): FakerCandidate {
-    return {
-      method: 'nearbyGPSCoordinate',
-      callback: () => faker.location.nearbyGPSCoordinate(),
-    };
-  }
-
   private timeZone(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'timeZone',
       callback: () => faker.location.timeZone(),
     };
@@ -116,6 +131,7 @@ export class LocationModule extends AbstractFakerModule {
       this.zipCode(),
       this.city(),
       this.buildingNumber(),
+      this.buildingNumberInt(),
       this.street(),
       this.streetAddress(),
       this.country(),
@@ -126,7 +142,6 @@ export class LocationModule extends AbstractFakerModule {
       this.direction(),
       this.cardinalDirection(),
       this.ordinalDirection(),
-      this.nearbyGPSCoordinate(),
       this.timeZone(),
     ];
   }

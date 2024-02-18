@@ -3,7 +3,7 @@ import { FakerFactory } from './faker-factory';
 import { FakerFinder } from './faker-finder';
 
 export class FakerContext {
-  private static readonly FUZZY_SEARCH_THRESHOLD = 0.3;
+  private static readonly FUZZY_SEARCH_THRESHOLD = 0.5;
   private static instance: FakerContext;
 
   private readonly fakerFactory: FakerFactory;
@@ -22,8 +22,8 @@ export class FakerContext {
     return FakerContext.instance;
   }
 
-  findCallback(fieldName: string): FakerCallback | undefined {
-    const searchResult = this.fakerFinder.search(fieldName);
+  findCallback(fieldName: string, type: NonArrayFieldType): FakerCallback | undefined {
+    const searchResult = this.fakerFinder.search(fieldName, type);
 
     if (searchResult.length === 0) {
       return undefined;

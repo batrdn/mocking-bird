@@ -1,5 +1,5 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate, Rule } from '@mocking-bird/core';
+import {FakerCandidate, FieldType, Rule} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
 export class WordModule extends AbstractFakerModule {
@@ -24,6 +24,7 @@ export class WordModule extends AbstractFakerModule {
 
   private adjective(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'adjective',
       callback: (rule) => faker.word.adjective(this.getOptions(rule)),
     };
@@ -31,6 +32,7 @@ export class WordModule extends AbstractFakerModule {
 
   private noun(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'noun',
       callback: (rule) => faker.word.noun(this.getOptions(rule)),
     };
@@ -38,6 +40,7 @@ export class WordModule extends AbstractFakerModule {
 
   private verb(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'verb',
       callback: (rule) => faker.word.verb(this.getOptions(rule)),
     };
@@ -45,6 +48,7 @@ export class WordModule extends AbstractFakerModule {
 
   private adverb(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'adverb',
       callback: (rule) => faker.word.adverb(this.getOptions(rule)),
     };
@@ -52,6 +56,7 @@ export class WordModule extends AbstractFakerModule {
 
   private conjunction(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'conjunction',
       callback: (rule) => faker.word.conjunction(this.getOptions(rule)),
     };
@@ -59,6 +64,7 @@ export class WordModule extends AbstractFakerModule {
 
   private interjection(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'interjection',
       callback: (rule) => faker.word.interjection(this.getOptions(rule)),
     };
@@ -66,6 +72,7 @@ export class WordModule extends AbstractFakerModule {
 
   private preposition(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'preposition',
       callback: (rule) => faker.word.preposition(this.getOptions(rule)),
     };
@@ -73,6 +80,7 @@ export class WordModule extends AbstractFakerModule {
 
   private words(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'words',
       callback: (rule) => {
         if (rule?.size) {

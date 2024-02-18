@@ -37,8 +37,6 @@ export class MongooseValidator extends Validator {
       return schemaRule;
     }
 
-    console.log(schemaRule, rule);
-
     this.validateRules(schemaRule, rule);
     return { ...schemaRule, ...rule };
   }

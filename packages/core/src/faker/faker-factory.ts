@@ -38,7 +38,7 @@ export class FakerFactory {
         return faker.helpers.fromRegExp(rule.pattern);
       }
 
-      return faker.string.sample(FakerHelpers.getStringRule(rule));
+      return faker.word.sample(FakerHelpers.getStringRule(rule));
     };
   }
 
@@ -67,7 +67,7 @@ export class FakerFactory {
 
   private getBufferCallback(): FakerCallback {
     return (rule?: Rule) =>
-      Buffer.from(faker.string.sample(FakerHelpers.getStringRule(rule)));
+      Buffer.from(faker.word.sample(FakerHelpers.getStringRule(rule)));
   }
 
   private getMongoDBIDCallback(): FakerCallback {

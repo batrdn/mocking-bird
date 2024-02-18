@@ -1,10 +1,11 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate } from '@mocking-bird/core';
+import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
 export class PhoneModule extends AbstractFakerModule {
   private phoneNumber(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'phoneNumber',
       callback: () => faker.phone.number(),
     };
@@ -12,6 +13,7 @@ export class PhoneModule extends AbstractFakerModule {
 
   private imei(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'imei',
       callback: () => faker.phone.imei(),
     };

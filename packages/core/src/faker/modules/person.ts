@@ -1,10 +1,11 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate } from '@mocking-bird/core';
+import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
 export class PersonModule extends AbstractFakerModule {
   private firstName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'firstName',
       callback: () => faker.person.firstName(),
     };
@@ -12,6 +13,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private lastName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'lastName',
       callback: () => faker.person.lastName(),
     };
@@ -19,6 +21,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private fullName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'fullName',
       callback: () => faker.person.fullName(),
     };
@@ -26,6 +29,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private middleName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'middleName',
       callback: () => faker.person.middleName(),
     };
@@ -33,6 +37,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private gender(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'gender',
       callback: () => faker.person.gender(),
     };
@@ -40,6 +45,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private sex(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'sex',
       callback: () => faker.person.sex(),
     };
@@ -47,6 +53,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private bio(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'bio',
       callback: () => faker.person.bio(),
     };
@@ -54,6 +61,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private prefix(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'personPrefix',
       callback: () => faker.person.prefix(),
     };
@@ -61,6 +69,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private suffix(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'personSuffix',
       callback: () => faker.person.suffix(),
     };
@@ -68,6 +77,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private jobTitle(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'jobTitle',
       callback: () => faker.person.jobTitle(),
     };
@@ -75,6 +85,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private jobDescriptor(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'jobDescriptor',
       callback: () => faker.person.jobDescriptor(),
     };
@@ -82,6 +93,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private jobArea(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'jobArea',
       callback: () => faker.person.jobArea(),
     };
@@ -89,6 +101,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private jobType(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'jobType',
       callback: () => faker.person.jobType(),
     };
@@ -96,6 +109,7 @@ export class PersonModule extends AbstractFakerModule {
 
   private zodiacSign(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'zodiacSign',
       callback: () => faker.person.zodiacSign(),
     };

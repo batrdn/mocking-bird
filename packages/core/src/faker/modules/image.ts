@@ -1,10 +1,11 @@
-import { FakerCandidate } from '@mocking-bird/core';
+import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { AbstractFakerModule } from './abstract-faker-module';
 
 export class ImageModule extends AbstractFakerModule {
   private avatar(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'avatar',
       callback: () => faker.image.avatar(),
     };
@@ -12,6 +13,7 @@ export class ImageModule extends AbstractFakerModule {
 
   private url(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'image',
       callback: () => faker.image.url(),
     };
@@ -19,6 +21,7 @@ export class ImageModule extends AbstractFakerModule {
 
   private dataUri(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'dataUri',
       callback: () => faker.image.dataUri(),
     };

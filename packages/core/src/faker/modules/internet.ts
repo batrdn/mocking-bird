@@ -1,10 +1,11 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate } from '@mocking-bird/core';
+import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
 export class InternetModule extends AbstractFakerModule {
   private email(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'email',
       callback: () => faker.internet.email(),
     };
@@ -12,6 +13,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private userName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'userName',
       callback: () => faker.internet.userName(),
     };
@@ -19,6 +21,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private domainName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'domainName',
       callback: () => faker.internet.domainName(),
     };
@@ -26,6 +29,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private domainSuffix(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'domainSuffix',
       callback: () => faker.internet.domainSuffix(),
     };
@@ -33,6 +37,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private domainWord(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'domainWord',
       callback: () => faker.internet.domainWord(),
     };
@@ -40,6 +45,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private ip(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'ip',
       callback: () => faker.internet.ip(),
     };
@@ -47,6 +53,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private ipv4(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'ipv4',
       callback: () => faker.internet.ipv4(),
     };
@@ -54,6 +61,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private ipv6(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'ipv6',
       callback: () => faker.internet.ipv6(),
     };
@@ -61,6 +69,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private userAgent(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'userAgent',
       callback: () => faker.internet.userAgent(),
     };
@@ -68,6 +77,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private color(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'color',
       callback: () => faker.internet.color(),
     };
@@ -75,6 +85,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private mac(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'mac',
       callback: () => faker.internet.mac(),
     };
@@ -82,6 +93,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private password(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'password',
       callback: (rule) =>
         faker.internet.password({
@@ -92,6 +104,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private protocol(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'protocol',
       callback: () => faker.internet.protocol(),
     };
@@ -99,6 +112,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private url(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'url',
       callback: () => faker.internet.url(),
     };
@@ -106,6 +120,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private displayName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'displayName',
       callback: () => faker.internet.displayName(),
     };
@@ -113,6 +128,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private httpMethod(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'httpMethod',
       callback: () => faker.internet.httpMethod(),
     };
@@ -120,6 +136,7 @@ export class InternetModule extends AbstractFakerModule {
 
   private emoji(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'emoji',
       callback: () => faker.internet.emoji(),
     };

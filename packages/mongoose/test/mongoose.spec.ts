@@ -1,11 +1,29 @@
 import { MongooseFixture } from '../src';
-import { NestedModel, BasicModel } from './models';
+import { NestedModel, BasicModel, IBasicDocument } from './models';
 
 describe('Mocking Bird - Mongoose', () => {
+  const assertRequiredFields = (mock: IBasicDocument) => {
+    // Required fields should be defined
+    expect(mock.firstname).toBeDefined();
+    expect(mock.lastname).toBeDefined();
+    expect(mock.date).toBeDefined();
+
+    // Non-required fields should be undefined
+    expect(mock.age).toBeUndefined();
+    expect(mock.email).toBeUndefined();
+    expect(mock.binData).toBeUndefined();
+    expect(mock.idField).toBeUndefined();
+    expect(mock.uuid).toBeUndefined();
+    expect(mock.bigInt).toBeUndefined();
+    expect(mock.decimal128).toBeUndefined();
+    expect(mock.array).toBeUndefined();
+    expect(mock.enum).toBeUndefined();
+  };
+
   describe('Basic model', () => {
     const fixture = new MongooseFixture(BasicModel);
 
-    it('should generate a basic model mock (primitive type check)', () => {
+    it('should generate a basic model mock', () => {
       const mock = fixture.generate();
 
       expect(mock).toBeDefined();
@@ -101,21 +119,7 @@ describe('Mocking Bird - Mongoose', () => {
     it('should generate only required fields', () => {
       const mock = fixture.generate({}, { requiredOnly: true });
 
-      // Required fields should be defined
-      expect(mock.firstname).toBeDefined();
-      expect(mock.lastname).toBeDefined();
-      expect(mock.date).toBeDefined();
-
-      // Non-required fields should be undefined
-      expect(mock.age).toBeUndefined();
-      expect(mock.email).toBeUndefined();
-      expect(mock.binData).toBeUndefined();
-      expect(mock.idField).toBeUndefined();
-      expect(mock.uuid).toBeUndefined();
-      expect(mock.bigInt).toBeUndefined();
-      expect(mock.decimal128).toBeUndefined();
-      expect(mock.array).toBeUndefined();
-      expect(mock.enum).toBeUndefined();
+      assertRequiredFields(mock);
     });
 
     it('should exclude specified fields', () => {
@@ -408,6 +412,46 @@ describe('Mocking Bird - Mongoose', () => {
           }
         );
       }).toThrow();
+    });
+  });
+
+  describe('Bulk generation', () => {
+    it('should generate multiple mocks', () => {
+      const basicFixture = new MongooseFixture(BasicModel);
+      const basicMocks = basicFixture.bulkGenerate(5);
+
+      const nestedFixture = new MongooseFixture(NestedModel);
+      const nestedMocks = nestedFixture.bulkGenerate(10);
+
+      expect(basicMocks).toHaveLength(5);
+      expect(nestedMocks).toHaveLength(10);
+    });
+  });
+
+  describe('Global options', () => {
+    beforeEach(() => {
+      MongooseFixture.setGlobalOptions({
+        requiredOnly: true,
+      });
+    });
+
+    afterEach(() => {
+      MongooseFixture.setGlobalOptions({});
+    });
+
+    it('should generate mocks based on global options', () => {
+      const fixture = new MongooseFixture(BasicModel);
+      const mock = fixture.generate();
+
+      assertRequiredFields(mock);
+    });
+
+    it('should override global options', () => {
+      const fixture = new MongooseFixture(BasicModel);
+      const mock = fixture.generate({}, { requiredOnly: false });
+
+      expect(mock.age).toBeDefined();
+      expect(mock.email).toBeDefined();
     });
   });
 });

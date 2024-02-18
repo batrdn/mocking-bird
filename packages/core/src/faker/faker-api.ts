@@ -1,28 +1,46 @@
 import { NonArrayFieldType, Rule, Value } from '../types';
 import { FakerContext } from './faker-context';
+import { Validator } from '@mocking-bird/core';
 
 export class FakerApi {
+  private readonly validator: Validator;
+
+  constructor(validator: Validator) {
+    this.validator = validator;
+  }
+
   generate(
     field: string,
     type: NonArrayFieldType,
     rule?: Rule,
-    useSmartSearch = true
+    isAccurate = true
   ): Value {
-    if (!useSmartSearch) {
+    if (!isAccurate) {
       return this.generateDefault(type, rule);
     }
 
-    const callback = FakerContext.getInstance().findCallback(field);
+    const callback = FakerContext.getInstance().findCallback(field, type);
 
     if (callback) {
       const value = callback(rule);
+      const isValidValue = this.isGeneratedValueValid(value, rule);
 
-      // TODO: validate and coerce types
-
-      return value;
+      return isValidValue ? value : this.generateDefault(type, rule);
     }
 
     return this.generateDefault(type, rule);
+  }
+
+  private isGeneratedValueValid(value: Value, rule?: Rule): boolean {
+    try {
+      if (rule) {
+        this.validator.validate(value, rule);
+      }
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   private generateDefault(type: NonArrayFieldType, rule?: Rule): Value {

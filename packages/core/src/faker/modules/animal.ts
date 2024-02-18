@@ -1,10 +1,11 @@
-import { FakerCandidate } from '@mocking-bird/core';
+import { FakerCandidate, FieldType } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { AbstractFakerModule } from './abstract-faker-module';
 
 export class AnimalModule extends AbstractFakerModule {
   private dog(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'dog',
       callback: () => faker.animal.dog(),
     };
@@ -12,6 +13,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private cat(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'cat',
       callback: () => faker.animal.cat(),
     };
@@ -19,6 +21,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private snake(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'snake',
       callback: () => faker.animal.snake(),
     };
@@ -26,6 +29,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private bear(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'bear',
       callback: () => faker.animal.bear(),
     };
@@ -33,6 +37,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private lion(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'lion',
       callback: () => faker.animal.lion(),
     };
@@ -40,6 +45,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private cetacean(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'cetacean',
       callback: () => faker.animal.cetacean(),
     };
@@ -47,6 +53,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private horse(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'horse',
       callback: () => faker.animal.horse(),
     };
@@ -54,6 +61,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private bird(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'bird',
       callback: () => faker.animal.bird(),
     };
@@ -61,6 +69,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private cow(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'cow',
       callback: () => faker.animal.cow(),
     };
@@ -68,6 +77,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private fish(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'fish',
       callback: () => faker.animal.fish(),
     };
@@ -75,6 +85,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private crocodilia(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'crocodilia',
       callback: () => faker.animal.crocodilia(),
     };
@@ -82,6 +93,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private insect(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'insect',
       callback: () => faker.animal.insect(),
     };
@@ -89,6 +101,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private rabbit(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'rabbit',
       callback: () => faker.animal.rabbit(),
     };
@@ -96,6 +109,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private rodent(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'rodent',
       callback: () => faker.animal.rodent(),
     };
@@ -103,6 +117,7 @@ export class AnimalModule extends AbstractFakerModule {
 
   private type(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'animalType',
       callback: () => faker.animal.type(),
     };

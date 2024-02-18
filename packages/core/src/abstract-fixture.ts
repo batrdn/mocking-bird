@@ -27,8 +27,14 @@ export abstract class AbstractFixture<T> {
     this.typeMapper = typeMapper;
     this.validator = validator ? validator : new Validator();
 
-    this.fakerApi = new FakerApi();
+    this.fakerApi = new FakerApi(this.validator);
   }
+
+  abstract bulkGenerate(
+    size: number,
+    overrideValues?: Record<FieldPath, Value>,
+    options?: FixtureOptions
+  ): T[];
 
   abstract generate(
     overrideValues?: Record<FieldPath, Value>,
@@ -39,19 +45,19 @@ export abstract class AbstractFixture<T> {
     fieldPath: FieldPath,
     type: NonArrayFieldType,
     rule?: Rule,
-    useSmartSearch = true
+    isAccurate = true
   ): Value {
     this.validatePath(fieldPath);
     const field = this.getRelevantField(fieldPath);
 
-    return this.fakerApi.generate(field, type, rule, useSmartSearch);
+    return this.fakerApi.generate(field, type, rule, isAccurate);
   }
 
   protected generateArrayValue(
     fieldPath: FieldPath,
     type: NonArrayFieldType,
     rule?: Rule,
-    useSmartSearch = true
+    isAccurate = true
   ): Value[] {
     this.validatePath(fieldPath);
 
@@ -61,7 +67,7 @@ export abstract class AbstractFixture<T> {
           this.getRelevantField(fieldPath),
           type,
           rule,
-          useSmartSearch
+          isAccurate
         )
       );
     }
@@ -71,7 +77,7 @@ export abstract class AbstractFixture<T> {
         this.getRelevantField(fieldPath),
         type,
         rule,
-        useSmartSearch
+        isAccurate
       ),
     ];
   }

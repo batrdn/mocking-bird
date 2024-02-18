@@ -1,10 +1,11 @@
-import { FakerCandidate } from '@mocking-bird/core';
+import { FakerCandidate, FieldType } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { AbstractFakerModule } from './abstract-faker-module';
 
 export class CommerceModule extends AbstractFakerModule {
   private department(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'department',
       callback: () => faker.commerce.department(),
     };
@@ -12,6 +13,7 @@ export class CommerceModule extends AbstractFakerModule {
 
   private productName(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'productName',
       callback: () => faker.commerce.productName(),
     };
@@ -19,6 +21,7 @@ export class CommerceModule extends AbstractFakerModule {
 
   private price(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'price',
       callback: (rule) =>
         faker.commerce.price({
@@ -28,8 +31,24 @@ export class CommerceModule extends AbstractFakerModule {
     };
   }
 
+  private priceFloat(): FakerCandidate {
+    return {
+      type: FieldType.FLOAT,
+      method: 'priceFloat',
+      callback: (rule) =>
+        this.convertToFloat(
+          faker.commerce.price({
+            min: rule?.min,
+            max: rule?.max,
+          }),
+          rule
+        ),
+    };
+  }
+
   private productAdjective(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'productAdjective',
       callback: () => faker.commerce.productAdjective(),
     };
@@ -37,6 +56,7 @@ export class CommerceModule extends AbstractFakerModule {
 
   private productMaterial(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'productMaterial',
       callback: () => faker.commerce.productMaterial(),
     };
@@ -44,6 +64,7 @@ export class CommerceModule extends AbstractFakerModule {
 
   private product(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'product',
       callback: () => faker.commerce.product(),
     };
@@ -51,6 +72,7 @@ export class CommerceModule extends AbstractFakerModule {
 
   private productDescription(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'productDescription',
       callback: () => faker.commerce.productDescription(),
     };
@@ -58,8 +80,9 @@ export class CommerceModule extends AbstractFakerModule {
 
   private isbn(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'isbn',
-      callback: (options) => faker.commerce.isbn(),
+      callback: () => faker.commerce.isbn(),
     };
   }
 
@@ -68,6 +91,7 @@ export class CommerceModule extends AbstractFakerModule {
       this.department(),
       this.productName(),
       this.price(),
+      this.priceFloat(),
       this.productAdjective(),
       this.productMaterial(),
       this.product(),

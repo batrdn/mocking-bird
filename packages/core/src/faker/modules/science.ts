@@ -1,19 +1,21 @@
 import { AbstractFakerModule } from './abstract-faker-module';
-import { FakerCandidate } from '@mocking-bird/core';
+import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
 export class ScienceModule extends AbstractFakerModule {
   chemicalElement(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'chemicalElement',
-      callback: () => faker.science.chemicalElement(),
+      callback: () => faker.science.chemicalElement().name,
     };
   }
 
   unit(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'unit',
-      callback: () => faker.science.unit(),
+      callback: () => faker.science.unit().name,
     };
   }
 

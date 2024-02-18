@@ -1,4 +1,4 @@
-import { FakerCandidate } from '@mocking-bird/core';
+import { FakerCandidate, FieldType } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
 import { AbstractFakerModule } from './abstract-faker-module';
@@ -6,6 +6,7 @@ import { AbstractFakerModule } from './abstract-faker-module';
 export class AirlineModule extends AbstractFakerModule {
   private flightNumber(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'flightNumber',
       callback: (rule) => {
         const { min, max } = FakerHelpers.getMinMaxRule(rule);
@@ -28,8 +29,9 @@ export class AirlineModule extends AbstractFakerModule {
 
   private aircraftType(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'aircraftType',
-      callback: (rule) => {
+      callback: () => {
         return faker.airline.aircraftType();
       },
     };
@@ -37,8 +39,9 @@ export class AirlineModule extends AbstractFakerModule {
 
   private seat(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'seat',
-      callback: (rule) => {
+      callback: () => {
         return faker.airline.seat();
       },
     };
@@ -46,35 +49,39 @@ export class AirlineModule extends AbstractFakerModule {
 
   private airline(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'airline',
-      callback: (rule) => {
-        return faker.airline.airline();
+      callback: () => {
+        return faker.airline.airline().name;
       },
     };
   }
 
   private airport(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'airport',
-      callback: (rule) => {
-        return faker.airline.airport();
+      callback: () => {
+        return faker.airline.airport().name;
       },
     };
   }
 
   private airplane(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'airplane',
-      callback: (rule) => {
-        return faker.airline.airplane();
+      callback: () => {
+        return faker.airline.airplane().name;
       },
     };
   }
 
   private recordLocator(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'recordLocator',
-      callback: (rule) => {
+      callback: () => {
         return faker.airline.recordLocator();
       },
     };

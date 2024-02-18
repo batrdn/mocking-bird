@@ -13,3 +13,5 @@ export * from './science';
 export * from './system';
 export * from './vehicle';
 export * from './word';
+export * from './date';
+export * from './number';

@@ -1,10 +1,11 @@
-import { FakerCandidate } from '@mocking-bird/core';
+import { FakerCandidate, FieldType } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { AbstractFakerModule } from './abstract-faker-module';
 
 export class CompanyModule extends AbstractFakerModule {
   private name(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'name',
       callback: () => faker.company.name(),
     };
@@ -12,6 +13,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private catchPhrase(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'catchPhrase',
       callback: () => faker.company.catchPhrase(),
     };
@@ -19,6 +21,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private buzzPhrase(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'buzzPhrase',
       callback: () => faker.company.buzzPhrase(),
     };
@@ -26,6 +29,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private catchPhraseAdjective(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'catchPhraseAdjective',
       callback: () => faker.company.catchPhraseAdjective(),
     };
@@ -33,6 +37,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private catchPhraseDescriptor(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'catchPhraseDescriptor',
       callback: () => faker.company.catchPhraseDescriptor(),
     };
@@ -40,6 +45,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private catchPhraseNoun(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'catchPhraseNoun',
       callback: () => faker.company.catchPhraseNoun(),
     };
@@ -47,6 +53,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private buzzAdjective(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'buzzAdjective',
       callback: () => faker.company.buzzAdjective(),
     };
@@ -54,6 +61,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private buzzVerb(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'buzzVerb',
       callback: () => faker.company.buzzVerb(),
     };
@@ -61,6 +69,7 @@ export class CompanyModule extends AbstractFakerModule {
 
   private buzzNoun(): FakerCandidate {
     return {
+      type: FieldType.STRING,
       method: 'buzzNoun',
       callback: () => faker.company.buzzNoun(),
     };
