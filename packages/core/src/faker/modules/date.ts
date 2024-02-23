@@ -1,8 +1,8 @@
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 import { FakerCandidate, FieldType } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
-export class DateModule extends AbstractFakerModule {
+export class DateModule extends BaseFakerModule {
   private date(): FakerCandidate {
     return {
       type: FieldType.DATE,
@@ -75,7 +75,7 @@ export class DateModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.date(),
       this.dateString(),

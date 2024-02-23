@@ -1,8 +1,8 @@
-import { FakerCandidate, FieldType } from '@mocking-bird/core';
+import {FakerCandidate, FieldType, Rule} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 
-export class CommerceModule extends AbstractFakerModule {
+export class CommerceModule extends BaseFakerModule {
   private department(): FakerCandidate {
     return {
       type: FieldType.STRING,
@@ -23,7 +23,7 @@ export class CommerceModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'price',
-      callback: (rule) =>
+      callback: (rule: Rule | undefined) =>
         faker.commerce.price({
           min: rule?.min,
           max: rule?.max,
@@ -35,7 +35,7 @@ export class CommerceModule extends AbstractFakerModule {
     return {
       type: FieldType.FLOAT,
       method: 'priceFloat',
-      callback: (rule) =>
+      callback: (rule: Rule | undefined) =>
         this.convertToFloat(
           faker.commerce.price({
             min: rule?.min,
@@ -86,7 +86,7 @@ export class CommerceModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.department(),
       this.productName(),

@@ -1,14 +1,14 @@
-import { FakerCandidate, FieldType } from '@mocking-bird/core';
+import {FakerCandidate, FieldType, Rule} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 
-export class AirlineModule extends AbstractFakerModule {
+export class AirlineModule extends BaseFakerModule {
   private flightNumber(): FakerCandidate {
     return {
       type: FieldType.STRING,
       method: 'flightNumber',
-      callback: (rule) => {
+      callback: (rule: Rule | undefined) => {
         const { min, max } = FakerHelpers.getMinMaxRule(rule);
 
         if (min !== undefined && max !== undefined) {
@@ -87,7 +87,7 @@ export class AirlineModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.flightNumber(),
       this.aircraftType(),

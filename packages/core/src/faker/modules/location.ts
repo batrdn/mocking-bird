@@ -1,9 +1,9 @@
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 import { FakerCandidate, FieldType } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
 
-export class LocationModule extends AbstractFakerModule {
+export class LocationModule extends BaseFakerModule {
   private zipCode(): FakerCandidate {
     return {
       type: FieldType.STRING,
@@ -126,7 +126,7 @@ export class LocationModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.zipCode(),
       this.city(),

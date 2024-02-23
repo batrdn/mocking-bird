@@ -2,7 +2,7 @@ import { FakerCandidate, Rule } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
 
-export abstract class AbstractFakerModule {
+export abstract class BaseFakerModule {
   abstract toFakerCandidates(): FakerCandidate[];
 
   protected convertToInt(str: string, rule?: Rule): number {

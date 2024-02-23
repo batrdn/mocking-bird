@@ -1,14 +1,14 @@
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 import { FakerCandidate, FieldType, Rule, Value } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
 
-export class NumberModule extends AbstractFakerModule {
+export class NumberModule extends BaseFakerModule {
   private number(): FakerCandidate {
     return {
       type: FieldType.NUMBER,
       method: 'number',
-      callback: (rule?: Rule) =>
+      callback: (rule: Rule | undefined) =>
         faker.number.int(
           rule?.size ? rule.size : FakerHelpers.getMinMaxRule(rule)
         ),
@@ -19,7 +19,7 @@ export class NumberModule extends AbstractFakerModule {
     return {
       type: FieldType.BIGINT,
       method: 'number',
-      callback: (rule?: Rule) =>
+      callback: (rule: Rule | undefined) =>
         faker.number.bigInt(
           rule?.size ? rule.size : FakerHelpers.getMinMaxRule(rule)
         ),
@@ -30,7 +30,7 @@ export class NumberModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'binary',
-      callback: (rule?: Rule) =>
+      callback: (rule: Rule | undefined) =>
         faker.number.binary(rule?.size ? rule.size : 1024),
     };
   }
@@ -39,7 +39,7 @@ export class NumberModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'octal',
-      callback: (rule?: Rule) =>
+      callback: (rule: Rule | undefined) =>
         faker.number.octal(rule?.size ? rule.size : 1024),
     };
   }
@@ -48,12 +48,12 @@ export class NumberModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'hex',
-      callback: (rule?: Rule) =>
+      callback: (rule: Rule | undefined) =>
         faker.number.hex(rule?.size ? rule.size : 1024),
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.number(),
       this.bigNumber(),

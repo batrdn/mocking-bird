@@ -1,8 +1,8 @@
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 import { faker } from '@faker-js/faker';
 import {FakerCandidate, FieldType} from '@mocking-bird/core';
 
-export class MusicModule extends AbstractFakerModule {
+export class MusicModule extends BaseFakerModule {
   private genre(): FakerCandidate {
     return {
       type: FieldType.STRING,
@@ -19,7 +19,7 @@ export class MusicModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [this.genre(), this.songName()];
   }
 }

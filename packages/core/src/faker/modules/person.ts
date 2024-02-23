@@ -1,8 +1,8 @@
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
-export class PersonModule extends AbstractFakerModule {
+export class PersonModule extends BaseFakerModule {
   private firstName(): FakerCandidate {
     return {
       type: FieldType.STRING,
@@ -115,7 +115,7 @@ export class PersonModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.firstName(),
       this.lastName(),
