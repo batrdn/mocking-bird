@@ -1,5 +1,5 @@
 import Fuse from 'fuse.js';
-import { FakerCandidate, NonArrayFieldType } from '@mocking-bird/core';
+import { FakerCandidate, NonArrayFieldType } from '../types';
 import {
   AirlineModule,
   AnimalModule,

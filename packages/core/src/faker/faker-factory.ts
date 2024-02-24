@@ -1,10 +1,4 @@
-import {
-  FakerCallback,
-  FieldType,
-  NonArrayFieldType,
-  Rule,
-  Value,
-} from '@mocking-bird/core';
+import { FakerCallback, FieldType, NonArrayFieldType, Rule } from '../types';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from './faker-helpers';
 
@@ -88,13 +82,16 @@ export class FakerFactory {
   }
 
   private getObjectCallback(): FakerCallback {
-    return (rule: Rule | undefined): any =>
-      Array.from({ length: rule?.size ?? 3 }).reduce((obj: any, _) => {
-        const key = faker.word.sample({
-          strategy: 'shortest',
-        });
-        obj[key] = faker.string.sample();
-        return obj;
-      }, {});
+    return (rule: Rule | undefined): Record<string, string> =>
+      Array.from({ length: rule?.size ?? 3 }).reduce(
+        (obj: Record<string, string>) => {
+          const key = faker.word.sample({
+            strategy: 'shortest',
+          });
+          obj[key] = faker.string.sample();
+          return obj;
+        },
+        {}
+      );
   }
 }

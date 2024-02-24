@@ -1,4 +1,4 @@
-import {FakerCandidate, FieldType, Rule} from '@mocking-bird/core';
+import { FakerCandidate, FieldType, Rule } from '../../types';
 import { faker } from '@faker-js/faker';
 import { BaseFakerModule } from './base-faker-module';
 import { FakerHelpers } from '../faker-helpers';
@@ -8,7 +8,8 @@ export class FinanceModule extends BaseFakerModule {
     return {
       type: FieldType.STRING,
       method: 'accountNumber',
-      callback: (rule: Rule | undefined) => faker.finance.accountNumber(rule?.size),
+      callback: (rule: Rule | undefined) =>
+        faker.finance.accountNumber(rule?.size),
     };
   }
 

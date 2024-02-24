@@ -1,6 +1,6 @@
+import { Validator } from '../core-fixture';
 import { NonArrayFieldType, Rule, Value } from '../types';
 import { FakerContext } from './faker-context';
-import { Validator } from '@mocking-bird/core';
 
 /**
  * ### Overview

@@ -1,4 +1,4 @@
-import { Rule } from '@mocking-bird/core';
+import { Rule } from '../types';
 
 /**
  * A helper class that provides utility methods for faker.js.
@@ -21,7 +21,7 @@ export class FakerHelpers {
       return {
         length: {
           min: rule?.min,
-          max: rule?.max
+          max: rule?.max,
         },
       };
     }

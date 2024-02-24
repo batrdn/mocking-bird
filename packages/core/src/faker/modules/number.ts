@@ -1,5 +1,5 @@
 import { BaseFakerModule } from './base-faker-module';
-import { FakerCandidate, FieldType, Rule, Value } from '@mocking-bird/core';
+import { FakerCandidate, FieldType, Rule } from '../../types';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
 

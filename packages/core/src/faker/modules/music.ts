@@ -1,6 +1,6 @@
 import { BaseFakerModule } from './base-faker-module';
 import { faker } from '@faker-js/faker';
-import {FakerCandidate, FieldType} from '@mocking-bird/core';
+import { FakerCandidate, FieldType } from '../../types';
 
 export class MusicModule extends BaseFakerModule {
   private genre(): FakerCandidate {

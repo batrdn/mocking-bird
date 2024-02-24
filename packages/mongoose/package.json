@@ -5,7 +5,8 @@
     "mongoose": ">=6"
   },
   "dependencies": {
-    "@mocking-bird/core": "*"
+    "@mocking-bird/core": "*",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@testcontainers/mongodb": "^10.7.1",

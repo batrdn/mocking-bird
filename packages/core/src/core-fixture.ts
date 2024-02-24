@@ -1,6 +1,5 @@
 import {
   FieldPath,
-  FieldType,
   FixtureOptions,
   NonArrayFieldType,
   Rule,

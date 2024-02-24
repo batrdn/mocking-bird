@@ -431,7 +431,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
 
     const overrideKey = matchingPatterns[0];
 
-    return overrideValues.hasOwnProperty(overrideKey)
+    return Object.prototype.hasOwnProperty.call(overrideValues, overrideKey)
       ? overrideValues[overrideKey]
       : undefined;
   }

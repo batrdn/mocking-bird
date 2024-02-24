@@ -1,4 +1,4 @@
-import { FakerCandidate, Rule } from '@mocking-bird/core';
+import { FakerCandidate, Rule } from '../../types';
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from '../faker-helpers';
 

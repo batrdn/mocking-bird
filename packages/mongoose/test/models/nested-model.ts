@@ -13,8 +13,8 @@ export interface IObjectDocument {
 }
 
 export interface IMixedDocument {
-  mixedAnyObject: any;
-  mixedArray: any[];
+  mixedAnyObject: object;
+  mixedArray: object[];
 }
 
 export interface INestedDocument {

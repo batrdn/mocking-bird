@@ -1,4 +1,4 @@
-import { FakerCallback, NonArrayFieldType } from '@mocking-bird/core';
+import { FakerCallback, NonArrayFieldType } from '../types';
 import { FakerFactory } from './faker-factory';
 import { FakerFinder } from './faker-finder';
 

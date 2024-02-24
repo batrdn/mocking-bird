@@ -362,7 +362,9 @@ describe('Mocking Bird - Mongoose', () => {
         },
       });
 
-      expect(complexObject.child.hasOwnProperty('email')).toBe(false);
+      expect(
+        Object.prototype.hasOwnProperty.call(complexObject.child, 'email')
+      ).toBe(false);
     });
 
     it('should ignore or throw an error for invalid glob pattern syntax', () => {

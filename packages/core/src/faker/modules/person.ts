@@ -1,5 +1,5 @@
 import { BaseFakerModule } from './base-faker-module';
-import {FakerCandidate, FieldType} from '@mocking-bird/core';
+import { FakerCandidate, FieldType } from '../../types';
 import { faker } from '@faker-js/faker';
 
 export class PersonModule extends BaseFakerModule {
