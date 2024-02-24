@@ -1,6 +1,9 @@
 {
   "name": "@mocking-bird/mongoose",
   "version": "1.0.0",
+  "scripts": {
+    "test": "nx test @mocking-bird/mongoose"
+  },
   "peerDependencies": {
     "mongoose": ">=6"
   },
