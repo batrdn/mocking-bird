@@ -1,7 +1,6 @@
 {
   "name": "@mocking-bird/core",
-  "version": "0.0.1",
-  "dependencies": {},
+  "version": "1.0.0",
   "type": "commonjs",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts"
