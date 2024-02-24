@@ -8,6 +8,14 @@ import {
 import { faker } from '@faker-js/faker';
 import { FakerHelpers } from './faker-helpers';
 
+/**
+ * ### Overview
+ *
+ * A factory class that provides callbacks for default fake value generation.
+ * It uses faker.js library to generate fake values.
+ *
+ * @see [FakerJS APIs](https://fakerjs.dev/api/)
+ */
 export class FakerFactory {
   private fakerMaps = new Map<NonArrayFieldType, FakerCallback>();
 
@@ -29,7 +37,7 @@ export class FakerFactory {
   }
 
   private getStringCallback(): FakerCallback {
-    return (rule?: Rule) => {
+    return (rule: Rule | undefined) => {
       if (rule?.enum) {
         return faker.helpers.arrayElement(rule.enum);
       }
@@ -43,16 +51,17 @@ export class FakerFactory {
   }
 
   private getNumberCallback(): FakerCallback {
-    return (rule?: Rule) => faker.number.int(FakerHelpers.getMinMaxRule(rule));
+    return (rule: Rule | undefined) =>
+      faker.number.int(FakerHelpers.getMinMaxRule(rule));
   }
 
   private getFloatCallback(): FakerCallback {
-    return (rule?: Rule) =>
+    return (rule: Rule | undefined) =>
       faker.number.float(FakerHelpers.getMinMaxRule(rule));
   }
 
   private getBigIntCallback(): FakerCallback {
-    return (rule?: Rule) =>
+    return (rule: Rule | undefined) =>
       faker.number.bigInt(FakerHelpers.getMinMaxRule(rule));
   }
 
@@ -66,7 +75,7 @@ export class FakerFactory {
   }
 
   private getBufferCallback(): FakerCallback {
-    return (rule?: Rule) =>
+    return (rule: Rule | undefined) =>
       Buffer.from(faker.word.sample(FakerHelpers.getStringRule(rule)));
   }
 
@@ -79,7 +88,7 @@ export class FakerFactory {
   }
 
   private getObjectCallback(): FakerCallback {
-    return (rule?: Rule): any =>
+    return (rule: Rule | undefined): any =>
       Array.from({ length: rule?.size ?? 3 }).reduce((obj: any, _) => {
         const key = faker.word.sample({
           strategy: 'shortest',

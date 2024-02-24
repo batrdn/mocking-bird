@@ -1,14 +1,14 @@
-import { FakerCandidate, FieldType } from '@mocking-bird/core';
+import {FakerCandidate, FieldType, Rule} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 import { FakerHelpers } from '../faker-helpers';
 
-export class FinanceModule extends AbstractFakerModule {
+export class FinanceModule extends BaseFakerModule {
   private accountNumber(): FakerCandidate {
     return {
       type: FieldType.STRING,
       method: 'accountNumber',
-      callback: (rule) => faker.finance.accountNumber(rule?.size),
+      callback: (rule: Rule | undefined) => faker.finance.accountNumber(rule?.size),
     };
   }
 
@@ -16,7 +16,7 @@ export class FinanceModule extends AbstractFakerModule {
     return {
       type: FieldType.NUMBER,
       method: 'accountNumber',
-      callback: (rule) =>
+      callback: (rule: Rule | undefined) =>
         this.convertToInt(faker.finance.accountNumber(rule?.size), rule),
     };
   }
@@ -151,7 +151,7 @@ export class FinanceModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'pin',
-      callback: (rule) => faker.finance.pin(rule?.size),
+      callback: (rule: Rule | undefined) => faker.finance.pin(rule?.size),
     };
   }
 
@@ -171,7 +171,7 @@ export class FinanceModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.accountNumber(),
       this.accountNumberInt(),

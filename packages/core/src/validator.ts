@@ -1,6 +1,26 @@
 import { Rule, Value } from './types';
 
+/**
+ * A class that provides utility methods for validating values against rules.
+ */
 export class Validator {
+  /**
+   * Validate a value against a rule.
+   *
+   * @remarks
+   *
+   * - enum: if a rule has an enum, the value must be one of the enum values.
+   * - min: if a rule has a min, the value must be greater than or equal to the min.
+   * - max: if a rule has a max, the value must be less than or equal to the max.
+   * - size: if a rule has a size, the value must have the same length as the size.
+   * - pattern: if a rule has a pattern, the value must match the pattern.
+   * - required: if a rule has `required` set to true, the value must not be undefined.
+   *
+   * @param value The value to validate.
+   * @param rule The rule to validate against.
+   *
+   * @throws An error if the value does not comply with the rule.
+   */
   validate(value: Value | undefined, rule: Rule): void {
     const pathStr = JSON.stringify(rule.path);
 
@@ -62,7 +82,9 @@ export class Validator {
 
       if (size !== rule.size) {
         throw new Error(
-          `Size of '${Array.isArray(value) ? `[${value}]` : value}' does not match the required size of ${rule.size}`
+          `Size of '${
+            Array.isArray(value) ? `[${value}]` : value
+          }' does not match the required size of ${rule.size}`
         );
       }
     }

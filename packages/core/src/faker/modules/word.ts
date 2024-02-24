@@ -1,10 +1,10 @@
-import { AbstractFakerModule } from './abstract-faker-module';
-import {FakerCandidate, FieldType, Rule} from '@mocking-bird/core';
+import { BaseFakerModule } from './base-faker-module';
+import { FakerCandidate, FieldType, Rule } from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
-export class WordModule extends AbstractFakerModule {
+export class WordModule extends BaseFakerModule {
   private getOptions(
-    rule?: Rule
+    rule: Rule | undefined
   ): number | { length: { min: number; max: number } } | undefined {
     if (rule?.size) {
       return rule.size;
@@ -26,7 +26,8 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'adjective',
-      callback: (rule) => faker.word.adjective(this.getOptions(rule)),
+      callback: (rule: Rule | undefined) =>
+        faker.word.adjective(this.getOptions(rule)),
     };
   }
 
@@ -34,7 +35,8 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'noun',
-      callback: (rule) => faker.word.noun(this.getOptions(rule)),
+      callback: (rule: Rule | undefined) =>
+        faker.word.noun(this.getOptions(rule)),
     };
   }
 
@@ -42,7 +44,8 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'verb',
-      callback: (rule) => faker.word.verb(this.getOptions(rule)),
+      callback: (rule: Rule | undefined) =>
+        faker.word.verb(this.getOptions(rule)),
     };
   }
 
@@ -50,7 +53,8 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'adverb',
-      callback: (rule) => faker.word.adverb(this.getOptions(rule)),
+      callback: (rule: Rule | undefined) =>
+        faker.word.adverb(this.getOptions(rule)),
     };
   }
 
@@ -58,7 +62,8 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'conjunction',
-      callback: (rule) => faker.word.conjunction(this.getOptions(rule)),
+      callback: (rule: Rule | undefined) =>
+        faker.word.conjunction(this.getOptions(rule)),
     };
   }
 
@@ -66,7 +71,8 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'interjection',
-      callback: (rule) => faker.word.interjection(this.getOptions(rule)),
+      callback: (rule: Rule | undefined) =>
+        faker.word.interjection(this.getOptions(rule)),
     };
   }
 
@@ -74,7 +80,8 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'preposition',
-      callback: (rule) => faker.word.preposition(this.getOptions(rule)),
+      callback: (rule: Rule | undefined) =>
+        faker.word.preposition(this.getOptions(rule)),
     };
   }
 
@@ -82,7 +89,7 @@ export class WordModule extends AbstractFakerModule {
     return {
       type: FieldType.STRING,
       method: 'words',
-      callback: (rule) => {
+      callback: (rule: Rule | undefined) => {
         if (rule?.size) {
           return faker.word.words(rule.size);
         }
@@ -101,7 +108,7 @@ export class WordModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [
       this.adjective(),
       this.noun(),

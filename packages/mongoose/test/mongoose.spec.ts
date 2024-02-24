@@ -37,6 +37,7 @@ describe('Mocking Bird - Mongoose', () => {
       expect(typeof mock.bigInt).toBe('bigint');
       expect(typeof mock.decimal128).toBe('number');
 
+      // Check the instances
       expect(mock.date).toBeInstanceOf(Date);
       expect(mock.array).toBeInstanceOf(Array<string>);
       expect(mock.binData).toBeInstanceOf(Buffer);
@@ -322,7 +323,7 @@ describe('Mocking Bird - Mongoose', () => {
 
     it('should override based on complex glob pattern', () => {
       const { complexObject } = fixture.generate({
-        'complexObject.**.is*': true, // ? is a wildcard that matches by characters
+        'complexObject.**.is*': true, // matches anything after `is`
       });
 
       expect(complexObject.child.isNested).toBe(true);
@@ -369,13 +370,13 @@ describe('Mocking Bird - Mongoose', () => {
         fixture.generate({
           'complexObject.[].name': 'John',
         });
-      }).toThrow();
+      }).toThrow('Invalid path: complexObject.[].name');
 
       expect(() => {
         fixture.generate({
           'complexObject.$.name': 'John',
         });
-      }).toThrow();
+      }).toThrow('Invalid path: complexObject.$.name');
     });
 
     it('should throw an error if there is a conflicting glob pattern in override values', () => {
@@ -384,14 +385,18 @@ describe('Mocking Bird - Mongoose', () => {
           'complexObject.*.name': 'John',
           'complexObject.**.name': 'Doe',
         });
-      }).toThrow();
+      }).toThrow(
+        "Forbidden: multiple override values found for path 'complexObject.child.name': complexObject.*.name, complexObject.**.name"
+      );
 
       expect(() => {
         fixture.generate({
           'complexObject.child.name': 'John',
           'complexObject.*.name': 'Doe',
         });
-      }).toThrow();
+      }).toThrow(
+        "Forbidden: multiple override values found for path 'complexObject.child.name': complexObject.child.name, complexObject.*.name"
+      );
     });
 
     it('should throw an error if there is a conflicting glob pattern in custom rules', () => {
@@ -411,7 +416,9 @@ describe('Mocking Bird - Mongoose', () => {
             ],
           }
         );
-      }).toThrow();
+      }).toThrow(
+        "Forbidden: multiple rules found for path 'complexObject.child.name': complexObject.*.name, complexObject.child.name"
+      );
     });
   });
 

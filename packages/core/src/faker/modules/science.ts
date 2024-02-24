@@ -1,8 +1,8 @@
-import { AbstractFakerModule } from './abstract-faker-module';
+import { BaseFakerModule } from './base-faker-module';
 import {FakerCandidate, FieldType} from '@mocking-bird/core';
 import { faker } from '@faker-js/faker';
 
-export class ScienceModule extends AbstractFakerModule {
+export class ScienceModule extends BaseFakerModule {
   chemicalElement(): FakerCandidate {
     return {
       type: FieldType.STRING,
@@ -19,7 +19,7 @@ export class ScienceModule extends AbstractFakerModule {
     };
   }
 
-  toFakerCandidates(): FakerCandidate[] {
+  override toFakerCandidates(): FakerCandidate[] {
     return [this.chemicalElement(), this.unit()];
   }
 }

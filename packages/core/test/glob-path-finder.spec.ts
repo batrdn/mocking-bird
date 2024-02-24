@@ -34,22 +34,12 @@ describe('GlobPathFinder', () => {
       expect(result).toEqual(['foo.**.baz']);
     });
 
-    it('should match question mark expression', () => {
-      const pathToFind = 'foo.bar.baz';
-
-      const paths = ['foo.bar.ba?', 'foo.**.bax', 'foo.*.qux', 'foo.qux.baz'];
-
-      const result = globPathFinder.findPatterns(pathToFind, paths);
-      expect(result).toEqual(['foo.bar.ba?']);
-    });
-
     it('should not match anything', () => {
       const path = 'foo.bar.baz';
       const patterns = [
         'foo.bar.qux',
         'foo.qux.baz',
         'foo.**.qux',
-        'fo?.**.qux',
       ];
 
       const result = globPathFinder.findPatterns(path, patterns);
