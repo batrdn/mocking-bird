@@ -1,6 +1,6 @@
-import { Validator } from '../core-fixture';
-import { NonArrayFieldType, Rule, Value } from '../types';
 import { FakerContext } from './faker-context';
+import { Validator } from '../validator';
+import { NonArrayFieldType, Rule, Value } from '../types';
 
 /**
  * ### Overview
