@@ -2,7 +2,7 @@
 
 > Not installed as a package, but instead used as a base for other packages.
 
-The core module contains the abstract class definitions and overall the base functionalities used for fixture 
+The core module contains the abstract class definitions and overall the base functionalities used for fixture
 generations. New packages may extend the core module to create their own fixture generation logic.
 
 ## Main Components

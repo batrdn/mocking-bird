@@ -218,7 +218,7 @@ const schema = new Schema({
 In this case, the `age` will be a number between 18 and 100, and the `city` will be either `Berlin` or `Frankfurt`.
 
 | 🚧 IMPORTANT                                                                                                                                                            |
-|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | If you specify a custom rule, make sure it doesn't conflict with the schema rule. For example, in the example above, you cannot set the `name` field to be not required |
 
 **Limitation**
