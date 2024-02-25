@@ -12,7 +12,6 @@ based on the types and constraints of the schema.
 - [Resolving paths](#resolving-paths)
 - [Overriding values](#overriding-values)
 - [Schema rules](#schema-rules)
-- [Defining custom rules](#updating)
 
 # Installation
 
@@ -95,7 +94,7 @@ enough. The default `fakers` may return, depending on the field type, a random s
 ### FixtureOptions
 
 | name               | type          | default     | description                                                 |
-|--------------------|---------------|-------------|-------------------------------------------------------------|
+| ------------------ | ------------- | ----------- | ----------------------------------------------------------- |
 | **`rules`**        | `Rule[]`      | `undefined` | Custom rules to apply for fixture generation                |
 | **`exclude`**      | `FieldPath[]` | `undefined` | Fields to exclude from fixture generation                   |
 | **`requiredOnly`** | `boolean`     | `false`     | Whether to generate only the required fields or not         |
@@ -104,7 +103,7 @@ enough. The default `fakers` may return, depending on the field type, a random s
 ### Rule
 
 | name           | type                   | isRequired | description                                                                                |
-|----------------|------------------------|------------|--------------------------------------------------------------------------------------------|
+| -------------- | ---------------------- | ---------- | ------------------------------------------------------------------------------------------ |
 | **`path`**     | `FieldPath`            | `true`     | The path to the field, for which the rule applies                                          |
 | **`required`** | `boolean`              | `false`    | Is the field required or not                                                               |
 | **`size`**     | `number`               | `false`    | The size of the generated value, which may apply to arrays, strings or numbers             |
@@ -218,9 +217,9 @@ const schema = new Schema({
 
 In this case, the `age` will be a number between 18 and 100, and the `city` will be either `Berlin` or `Frankfurt`.
 
-| 🚧 IMPORTANT                                                                                                                                                             |
-|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| If you specify a custom rule, make sure it doesn't conflict with the schema rule. For example, in the example above, you may not set the `name` field to be not required |
+| 🚧 IMPORTANT                                                                                                                                                            |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| If you specify a custom rule, make sure it doesn't conflict with the schema rule. For example, in the example above, you cannot set the `name` field to be not required |
 
 **Limitation**
 
