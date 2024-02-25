@@ -4,26 +4,67 @@
 
 Testing with real-world data scenarios is crucial, but creating such data shouldn't be a chore. _The Mocking Bird
 Project_ aims to provide a simple and easy, yet accurate and context-aware data generation for your models or
-schemas, so that it makes your testing experience smooth. Whether it be unit tests, integration tests or stress
-tests, you can easily generate fake data with custom options and constraints.
+schemas, so that it makes your testing experience smooth. Whether it is for unit tests, integration tests or stress
+tests, you can use it to easily generate fake data with flexible custom options and constraints.
 
-What does it mean to be context-aware? It means that the generated data is not just random-random value, but it's
-generated in a way that it's suitable for the fields and constraints of your model or schema. For example, if you have a field
+What does it mean to be context-aware? It means that the generated data is not just some random-random value, but it's
+generated in a way that it's suitable for the fields and constraints of your model or schema.
+
+For example, if you have a field
 `workEmail` in your model, the generated data will be a valid email address, and not just a random string.
 
-# Table of contents
+# Example
 
-- [Packages](#packages)
-- [Running tests](#running-tests)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
+### Mongoose Fixture
+
+```typescript
+import { Schema } from 'mongoose';
+import { MongooseFixture } from '@mocking-bird/mongoose';
+
+const schema = new Schema({
+  name: String,
+  email: String,
+  age: { type: Number, min: 18, max: 100 },
+  workEmail: String,
+  address: {
+    street: String,
+    city: String,
+    country: String,
+  },
+  createdAt: Date,
+  updatedAt: Date,
+});
+
+const fixture = new MongooseFixture(schema);
+
+const data = fixture.generate();
+```
+
+**Example output:**
+
+```json
+{
+  "name": "Turner, Thompson and Mueller",
+  "email": "Jerome.Mraz58@yahoo.com",
+  "age": 55,
+  "workEmail": "Sabrina99@hotmail.com",
+  "address": {
+    "street": "Apt. 123 1234",
+    "city": "Lake Ethylburgh",
+    "country": "Gambia"
+  },
+  "createdAt": "2023-09-11T05:38:59.576Z",
+  "updatedAt": "2024-02-26T08:25:16.412Z",
+  "_id": "a84f58e2fcff9dfaf148d7bf"
+}
+```
 
 # Packages
 
-Mocking Bird is a package-based repo using [Nx](https://nx.dev/). To see how individual packages work, please refer to the respective READMEs.
+Mocking Bird is a package-based repo using [Nx](https://nx.dev/). At the moment, only `mongoose` fixture generations
+are supported. To see how individual packages work in detail, please refer to the respective READMEs.
 
-- [@mocking-bird/core](./packages/core/README.md)
+- [@mocking-bird/core](./packages/core)
 - [@mocking-bird/mongoose](./packages/mongoose/README.md)
 
 To contribute to the project with a new package, please refer to the [contribution guidelines](CONTRIBUTING.md).
@@ -59,5 +100,5 @@ To contribute to the project, please refer to the [contribution guidelines](CONT
 
 # License
 
-The MIT License (MIT) 2024 - [Bat-Erdene Tsogoo](https://github.com/batrdn). Please have a look at the 
+The MIT License (MIT) 2024 - [Bat-Erdene Tsogoo](https://github.com/batrdn). Please have a look at the
 [LICENSE](LICENSE.md) for more details.
