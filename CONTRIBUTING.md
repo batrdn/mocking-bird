@@ -52,9 +52,9 @@ use `jest` and `tsc` respectively.
 If you want to contribute to an existing package, you can do so by following these guidelines:
 
 - Create a new pull request which follows the guideline in the [Pull Request Template](/.github/PULL_REQUEST_TEMPLATE.md).
-- Make sure to follow the [commit message convention](https://www.conventionalcommits.org/en/v1.0.0/). The title of 
-  the PR also follows the same convention. For example: 
-  - `feat(mongoose): add new feature` 
+- Make sure to follow the [commit message convention](https://www.conventionalcommits.org/en/v1.0.0/). The title of
+  the PR also follows the same convention. For example:
+  - `feat(mongoose): add new feature`
   - `fix(core): fix a bug`
   - `docs(mongoose): fix typo`
 - Make sure to include tests for the new feature or the bug fix.

@@ -1,6 +1,6 @@
 # Description
 
-Please include a summary of the changes and the related issue. Please also include relevant issue number, if exists. 
+Please include a summary of the changes and the related issue. Please also include relevant issue number, if exists.
 For example:
 
 Fixes # (issue)
@@ -13,4 +13,3 @@ Fixes # (issue)
 - [ ] I have added necessary comments for new classes and methods
 - [ ] I have written corresponding documentations
 - [ ] My changes generate no new warnings
-
