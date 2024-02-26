@@ -2,8 +2,8 @@
 
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 
-Testing with real-world data scenarios is crucial, but creating such data shouldn't be a chore. _The Mocking Bird
-Project_ aims to provide a simple and easy, yet accurate and context-aware data generation for your models or
+Testing with real-world data scenarios is crucial, but creating such data shouldn't be a chore. Therefore, this project 
+aims to provide a simple and easy, yet accurate and context-aware data generation for your models or
 schemas, so that it makes your testing experience smooth. Whether it is for unit tests, integration tests or stress
 tests, you can use it to easily generate fake data with flexible custom options and constraints.
 
