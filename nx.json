@@ -23,6 +23,7 @@
     "@nx/jest:jest": {
       "cache": true,
       "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
+      "outputs": ["{projectRoot}/coverage"],
       "options": {
         "passWithNoTests": true
       },
@@ -31,6 +32,28 @@
           "ci": true,
           "codeCoverage": true
         }
+      }
+    }
+  },
+  "release": {
+    "releaseTagPattern": "{projectName}@v{version}",
+    "projects": ["@mocking-bird/core", "@mocking-bird/mongoose"],
+    "projectsRelationship": "independent",
+    "version": {
+      "conventionalCommits": true
+    },
+    "git": {
+      "commit": true,
+      "commitArgs": "--no-verify",
+      "commitMessage": "chore(release): bump ${projectName} to ${version} 🚀 [skip ci]"
+    },
+    "changelog": {
+      "automaticFromRef": true,
+      "workspaceChangelog": {
+        "createRelease": "github"
+      },
+      "projectChangelogs": {
+        "createRelease": false
       }
     }
   }

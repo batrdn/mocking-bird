@@ -24,20 +24,6 @@
       "options": {
         "jestConfig": "packages/core/jest.config.ts"
       }
-    },
-    "version": {
-      "executor": "@jscutlery/semver:version",
-      "options": {
-        "preset": {
-          "name": "conventionalcommits",
-          "types": [
-            { "type": "feat", "section": "🚀 Features" },
-            { "type": "fix", "section": "🐞 Bug Fixes" },
-            { "type": "chore", "hidden": true }
-          ]
-        },
-        "commitMessageFormat": "chore(release): bump ${projectName} to ${version} 🌀 [skip ci]"
-      }
     }
   },
   "tags": []

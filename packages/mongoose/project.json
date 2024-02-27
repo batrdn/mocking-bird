@@ -24,28 +24,6 @@
       "options": {
         "jestConfig": "packages/mongoose/jest.config.ts"
       }
-    },
-    "version": {
-      "executor": "@jscutlery/semver:version",
-      "options": {
-        "preset": {
-          "name": "conventionalcommits",
-          "types": [
-            { "type": "feat", "section": "🚀 Features" },
-            { "type": "fix", "section": "🐞 Bug Fixes" },
-            { "type": "chore", "hidden": true }
-          ]
-        },
-        "postTargets": ["github"],
-        "commitMessageFormat": "chore(release): bump ${projectName} to ${version} 🐢 [skip ci]"
-      }
-    },
-    "github": {
-      "executor": "@jscutlery/semver:github",
-      "options": {
-        "tag": "{tag}",
-        "notes": "{notes}"
-      }
     }
   },
   "tags": []
