@@ -70,7 +70,7 @@ export class FakerFinder {
    */
   search(
     fieldName: string,
-    type: NonArrayFieldType
+    type: NonArrayFieldType,
   ): { faker: FakerCandidate; score?: number }[] {
     return (
       this.fuseMap
@@ -93,24 +93,34 @@ export class FakerFinder {
    * @private
    */
   private createFuseMap(
-    candidates: FakerCandidate[]
+    candidates: FakerCandidate[],
   ): Map<NonArrayFieldType, Fuse<FakerCandidate>> {
     const map = new Map<NonArrayFieldType, Fuse<FakerCandidate>>();
 
     const groupedCandidates = this.groupCandidatesByType(candidates);
 
     Object.entries(groupedCandidates).forEach(([type, candidates]) => {
-      map.set(
-        type as NonArrayFieldType,
-        new Fuse(candidates, {
-          includeScore: true,
-          shouldSort: true,
-          keys: ['method'],
-        })
-      );
+      map.set(type as NonArrayFieldType, this.createFuse(candidates));
     });
 
     return map;
+  }
+
+  /**
+   * Creates a fuse instance for the given list of faker candidates.
+   *
+   * @param candidates The list of faker candidates
+   *
+   * @returns A fuse instance
+   *
+   * @private
+   */
+  private createFuse(candidates: FakerCandidate[]): Fuse<FakerCandidate> {
+    return new Fuse(candidates, {
+      includeScore: true,
+      shouldSort: true, // The search results are sorted in ascending order. The best match comes first.
+      keys: ['method'],
+    });
   }
 
   /**
@@ -124,7 +134,7 @@ export class FakerFinder {
    * @private
    */
   private groupCandidatesByType(
-    candidates: FakerCandidate[]
+    candidates: FakerCandidate[],
   ): Record<NonArrayFieldType, FakerCandidate[]> {
     return candidates.reduce((acc, candidate) => {
       if (!acc[candidate.type]) {

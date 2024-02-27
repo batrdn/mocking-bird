@@ -64,7 +64,7 @@ If you want to contribute to an existing package, you can do so by following the
 
 ## Reporting Bugs
 
-#### Before Submitting a Bug Report
+#### Before submitting a bug report
 
 A good bug report shouldn't leave others needing to chase you up for more information. Therefore, we ask you to investigate carefully, collect information and describe the issue in detail in your report. Please complete the following steps in advance to help us fix any potential bug as fast as possible.
 
@@ -83,14 +83,14 @@ This section guides you through submitting an enhancement suggestion for CONTRIB
 Following these guidelines will help maintainers and the community to understand your suggestion and find related
 suggestions.
 
-#### Before Submitting an Enhancement
+#### Before submitting an enhancement
 
 - Make sure that you are using the latest version.
 - Read the documentations of the corresponding sub-projects carefully and find out if the functionality is already
   covered.
 - Perform a [search](/issues) to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
-#### How Do I Submit a Good Enhancement Suggestion?
+#### How do I submit a good enhancement suggestion?
 
 Enhancement suggestions are tracked as [GitHub issues](/issues).
 
