@@ -9,7 +9,7 @@
     "mongoose": ">=6"
   },
   "dependencies": {
-    "@mocking-bird/core": "latest",
+    "@mocking-bird/core": "*",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
