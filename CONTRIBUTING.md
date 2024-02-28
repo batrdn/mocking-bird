@@ -39,7 +39,7 @@ I will then try my best to resolve the issue as soon as possible 🤙
 As you can see, the project is structured as a monorepo using [Nx](https://nx.dev/). To create a new package:
 
 ```bash
-nx g @nx/js:lib --directory=packages/my-package --name=my-package --tags=scope:@mocking-bird --importPath=@mocking-bird
+npx nx g @nx/js:lib --directory=packages/my-package --name=@mocking-bird/my-package
 ```
 
 Just replace `my-package` with the name of your package. This will create a new package in the `packages` directory.

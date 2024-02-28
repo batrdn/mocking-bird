@@ -80,8 +80,8 @@ In the root directory, it will run the tests for only affected packages.
 Alternatively, you could directly use `nx` to run the tests.
 
 ```
-nx affected -t test --parallel
-nx run-many --target=test --all
+npx nx affected -t test --parallel
+npx nx run-many --target=test --all
 ```
 
 # Roadmap
