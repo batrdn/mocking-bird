@@ -1,3 +1,15 @@
+## 1.0.8 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- use simple npm publish for publishing action ([7881c6a](https://github.com/batrdn/mocking-bird/commit/7881c6a))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.7 (2024-02-29)
 
 
