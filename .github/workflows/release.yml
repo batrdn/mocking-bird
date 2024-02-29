@@ -1,11 +1,11 @@
-name: Release
+name: Release & Publish
 on:
   push:
     branches:
       - main
 jobs:
-  test:
-    name: Publish
+  release:
+    name: Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -32,6 +32,8 @@ jobs:
           git config --local user.name "${{ github.actor }}"
           git config --local user.email "${{ github.actor }}@users.noreply.github.com"
       - name: Release packages
-        run: npx nx release --skip-publish
+        run: npx nx release -y
         env:
           GH_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
