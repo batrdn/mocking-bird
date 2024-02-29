@@ -36,7 +36,6 @@
     }
   },
   "release": {
-    "releaseTagPattern": "{projectName}@v{version}",
     "projects": ["@mocking-bird/core", "@mocking-bird/mongoose"],
     "projectsRelationship": "independent",
     "version": {

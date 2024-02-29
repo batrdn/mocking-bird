@@ -13,8 +13,7 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@testcontainers/mongodb": "^10.7.1",
-    "@types/mongoose": "^5.11.97"
+    "@testcontainers/mongodb": "^10.7.1"
   },
   "type": "commonjs",
   "main": "./src/index.js",
