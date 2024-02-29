@@ -1,3 +1,15 @@
+## 1.0.9 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- replace publishing action with on tags event ([2c5c606](https://github.com/batrdn/mocking-bird/commit/2c5c606))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.8 (2024-02-29)
 
 
