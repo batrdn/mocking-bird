@@ -1,3 +1,15 @@
+## 1.0.14 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- release and publish workflow ([b94c2b5](https://github.com/batrdn/mocking-bird/commit/b94c2b5))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.13 (2024-02-29)
 
 
