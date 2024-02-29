@@ -32,13 +32,8 @@ jobs:
           git config --local user.name "${{ github.actor }}"
           git config --local user.email "${{ github.actor }}@users.noreply.github.com"
       - name: Release packages
-        run: npx nx release --skip-publish
+        run: npx nx release -y
         env:
           GH_TOKEN: ${{ github.token }}
-      - name: Push tags
-        run: git push --follow-tags
-      - name: Publish packages
-        run: npx nx release publish
-        env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

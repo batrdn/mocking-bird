@@ -1,6 +1,6 @@
 # Core
 
-> Not installed as a package, but instead used as a base for other packages.
+> Do not install as a package, use `@mocking-bird/mongoose` directly.
 
 The core module contains the abstract class definitions and overall the base functionalities used for fixture
 generations. New packages may extend the core module to create their own fixture generation logic.
