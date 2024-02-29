@@ -2,7 +2,8 @@ name: Publish
 on:
   push:
     tags:
-      - '@mocking-bird/**@*.*.*'
+      - '@mocking-bird/core@*.*.*'
+      - '@mocking-bird/mongoose@*.*.*'
 jobs:
   build:
     runs-on: ubuntu-latest
