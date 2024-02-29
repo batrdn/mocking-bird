@@ -7,6 +7,11 @@
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectName}"
+      }
+    },
     "build": {
       "cache": true,
       "dependsOn": ["^build"]
@@ -44,7 +49,7 @@
     "git": {
       "commit": true,
       "commitArgs": "--no-verify",
-      "commitMessage": "chore(release): bump ${projectName} to ${version} 🚀 [skip ci]"
+      "commitMessage": "chore(release): bump {projectName} to {version} 🚀 [skip ci]"
     },
     "changelog": {
       "automaticFromRef": true,

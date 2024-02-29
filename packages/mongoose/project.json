@@ -8,7 +8,7 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/mongoose",
+        "outputPath": "dist/@mocking-bird/mongoose",
         "main": "packages/mongoose/src/index.ts",
         "tsConfig": "packages/mongoose/tsconfig.lib.json",
         "assets": ["packages/mongoose/*.md"]
