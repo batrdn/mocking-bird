@@ -5,6 +5,7 @@
   "repository": {
     "url": "https://github.com/batrdn/mocking-bird"
   },
+  "author": "batrdn",
   "scripts": {
     "test": "nx affected -t test --parallel",
     "build": "nx affected -t build --parallel",
@@ -46,4 +47,3 @@
     "packages/*"
   ]
 }
-

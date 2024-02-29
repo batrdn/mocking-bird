@@ -2,6 +2,11 @@
   "name": "@mocking-bird/core",
   "version": "1.0.0",
   "private": false,
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/batrdn/mocking-bird"
+  },
+  "author": "batrdn",
   "engines": {
     "node": ">=18.*",
     "npm": ">=9.*"
