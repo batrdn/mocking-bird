@@ -35,5 +35,3 @@ jobs:
         run: npx nx release --skip-publish
         env:
           GH_TOKEN: ${{ github.token }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
