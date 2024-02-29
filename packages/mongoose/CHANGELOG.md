@@ -1,3 +1,15 @@
+## 1.0.12 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- use simple word for generic object value ([56a0c9e](https://github.com/batrdn/mocking-bird/commit/56a0c9e))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.11 (2024-02-29)
 
 
