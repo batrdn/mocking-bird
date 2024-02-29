@@ -1,3 +1,15 @@
+## 1.0.6 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- publish workflow ([30a1aea](https://github.com/batrdn/mocking-bird/commit/30a1aea))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.5 (2024-02-29)
 
 
