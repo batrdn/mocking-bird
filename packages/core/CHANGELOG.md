@@ -1,3 +1,17 @@
+## 1.0.4 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- directly publish after release and change release tag pattern ([299fe8f](https://github.com/batrdn/mocking-bird/commit/299fe8f))
+
+- project release tag pattern ([1cde4e9](https://github.com/batrdn/mocking-bird/commit/1cde4e9))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.3 (2024-02-29)
 
 
