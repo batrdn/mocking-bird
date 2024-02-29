@@ -1,6 +1,7 @@
 {
   "name": "@mocking-bird/core",
   "version": "1.0.0",
+  "private": false,
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "nx test @mocking-bird/core"
