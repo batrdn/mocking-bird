@@ -1,3 +1,15 @@
+## 1.0.5 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- replace mongoose validator with parsed rules ([b3070bb](https://github.com/batrdn/mocking-bird/commit/b3070bb))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.4 (2024-02-29)
 
 
