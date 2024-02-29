@@ -2,6 +2,9 @@
   "name": "mocking-bird",
   "version": "0.0.0",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/batrdn/mocking-bird"
+  },
   "scripts": {
     "test": "nx affected -t test --parallel",
     "build": "nx affected -t build --parallel",
