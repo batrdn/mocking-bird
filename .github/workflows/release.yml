@@ -30,7 +30,7 @@ jobs:
       - name: Release packages
         run: npx nx release --skip-publish
       - name: Publish packages
-        run: npx nx release publish
+        run: npx nx release publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
