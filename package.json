@@ -10,7 +10,7 @@
     "format:check": "nx format:check",
     "prepare": "husky"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "tslib": "^2.3.0"
   },
