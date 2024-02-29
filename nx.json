@@ -6,6 +6,31 @@
   },
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "affected": {
+    "defaultBase": "main"
+  },
+  "release": {
+    "releaseTagPattern": "{projectName} {version}",
+    "projects": ["@mocking-bird/core", "@mocking-bird/mongoose"],
+    "projectsRelationship": "independent",
+    "version": {
+      "conventionalCommits": true
+    },
+    "git": {
+      "commit": true,
+      "commitArgs": "--no-verify",
+      "commitMessage": "chore(release): release packages 🚀 [skip ci]"
+    },
+    "changelog": {
+      "automaticFromRef": true,
+      "projectChangelogs": {
+        "createRelease": "github"
+      },
+      "workspaceChangelog": {
+        "createRelease": false
+      }
+    }
+  },
   "targetDefaults": {
     "nx-release-publish": {
       "options": {
@@ -38,27 +63,6 @@
         "{workspaceRoot}/.eslintignore",
         "{workspaceRoot}/eslint.config.js"
       ]
-    }
-  },
-  "release": {
-    "projects": ["@mocking-bird/core", "@mocking-bird/mongoose"],
-    "projectsRelationship": "independent",
-    "version": {
-      "conventionalCommits": true
-    },
-    "git": {
-      "commit": true,
-      "commitArgs": "--no-verify",
-      "commitMessage": "chore(release): bump {projectName} to {version} 🚀 [skip ci]"
-    },
-    "changelog": {
-      "automaticFromRef": true,
-      "projectChangelogs": {
-        "createRelease": "github"
-      },
-      "workspaceChangelog": {
-        "createRelease": false
-      }
     }
   }
 }
