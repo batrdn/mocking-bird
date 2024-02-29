@@ -1,3 +1,15 @@
+## 1.0.2 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- deployment configuration
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.1 (2024-02-29)
 
 
