@@ -88,10 +88,10 @@ export class FakerFactory {
           const key = faker.word.sample({
             strategy: 'shortest',
           });
-          obj[key] = faker.string.sample();
+          obj[key] = faker.word.sample();
           return obj;
         },
-        {}
+        {},
       );
   }
 }
