@@ -6,48 +6,49 @@ import {
 
 export class MongooseTypeMapper extends CoreTypeMapper {
   private static readonly SUPPORTED_TYPES = [
-    'String',
-    'Number',
-    'Date',
-    'Buffer',
-    'Boolean',
-    'Mixed',
-    'ObjectId',
-    'Array',
-    'Decimal128',
-    'Map',
-    'Schema',
-    'UUID',
-    'BigInt',
+    'string',
+    'number',
+    'date',
+    'buffer',
+    'boolean',
+    'mixed',
+    'objectid',
+    'array',
+    'decimal128',
+    'map',
+    'schema',
+    'uuid',
+    'bigint',
   ];
 
   override getType(type: string): FieldType {
-    this.validateType(type);
+    const mongooseType = type.toLowerCase();
+    this.validateType(mongooseType);
 
-    switch (type) {
-      case 'ObjectId':
+    switch (mongooseType) {
+      case 'objectid':
         return FieldType.MONGO_DB_ID;
-      case 'String':
+      case 'string':
         return FieldType.STRING;
-      case 'Number':
+      case 'number':
         return FieldType.NUMBER;
-      case 'Boolean':
+      case 'boolean':
         return FieldType.BOOLEAN;
-      case 'Date':
+      case 'date':
         return FieldType.DATE;
-      case 'Buffer':
+      case 'buffer':
         return FieldType.BUFFER;
-      case 'Array':
+      case 'array':
         return FieldType.ARRAY;
-      case 'Decimal128':
+      case 'decimal128':
         return FieldType.FLOAT;
-      case 'UUID':
+      case 'uuid':
         return FieldType.UUID;
-      case 'BigInt':
+      case 'bigint':
         return FieldType.BIGINT;
-      case 'Mixed':
-      case 'Map':
-      case 'Schema':
+      case 'mixed':
+      case 'map':
+      case 'schema':
         return FieldType.OBJECT;
       default:
         throw new Error(`Unsupported type: ${type}`);

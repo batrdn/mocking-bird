@@ -53,10 +53,10 @@
     },
     "changelog": {
       "automaticFromRef": true,
-      "workspaceChangelog": {
+      "projectChangelogs": {
         "createRelease": "github"
       },
-      "projectChangelogs": {
+      "workspaceChangelog": {
         "createRelease": false
       }
     }
