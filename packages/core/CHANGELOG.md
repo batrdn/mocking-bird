@@ -1,3 +1,15 @@
+## 1.0.10 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- push tag event pattern ([1f9e6d8](https://github.com/batrdn/mocking-bird/commit/1f9e6d8))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.9 (2024-02-29)
 
 
