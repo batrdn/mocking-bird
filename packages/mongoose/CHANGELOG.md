@@ -1,3 +1,15 @@
+## 1.0.7 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- publish workflow tags pattern ([5f53dcf](https://github.com/batrdn/mocking-bird/commit/5f53dcf))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.6 (2024-02-29)
 
 
