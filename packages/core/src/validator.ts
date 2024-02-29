@@ -44,7 +44,7 @@ export class Validator {
       !rule.enum.includes(value)
     ) {
       throw new Error(
-        `Value '${value}' does not match any of the allowed enum values`
+        `Value '${value}' does not match any of the allowed enum values`,
       );
     }
   }
@@ -56,7 +56,7 @@ export class Validator {
       value < rule.min
     ) {
       throw new Error(
-        `Value '${value}' is less than the minimum allowed value of ${rule.min}`
+        `Value '${value}' is less than the minimum allowed value of ${rule.min}`,
       );
     }
   }
@@ -68,7 +68,7 @@ export class Validator {
       value > rule.max
     ) {
       throw new Error(
-        `Value '${value}' exceeds the maximum allowed value of ${rule.max}`
+        `Value '${value}' exceeds the maximum allowed value of ${rule.max}`,
       );
     }
   }
@@ -84,7 +84,7 @@ export class Validator {
         throw new Error(
           `Size of '${
             Array.isArray(value) ? `[${value}]` : value
-          }' does not match the required size of ${rule.size}`
+          }' does not match the required size of ${rule.size}`,
         );
       }
     }

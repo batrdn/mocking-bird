@@ -13,7 +13,6 @@ export class MongooseValidator extends Validator {
   /**
    * Validates a generated value against both the schema type and the custom rule
    *
-   * @param path The path or field name to which the value generated.
    * @param schemaType The schema type to validate the value against.
    * @param value The value to validate.
    * @param rule The custom rule to validate the value against.
@@ -21,12 +20,11 @@ export class MongooseValidator extends Validator {
    * @throws {Error} If the value does not comply with the schema type or the custom rule.
    */
   validateValue(
-    path: string,
     schemaType: SchemaType,
     value: Value | undefined,
-    rule: Rule | undefined
+    rule: Rule | undefined,
   ): void {
-    this.validateValueBySchema(path, value, schemaType);
+    this.validateValueBySchema(value, schemaType);
 
     if (rule) {
       super.validate(value, rule);
@@ -45,7 +43,7 @@ export class MongooseValidator extends Validator {
       enumValues?: (string | number)[];
       min?: number;
       max?: number;
-    })[]
+    })[],
   ): Rule | undefined {
     if (!schemaRules.length) {
       return undefined;
@@ -96,7 +94,7 @@ export class MongooseValidator extends Validator {
    */
   combineRules(
     schemaRule: Rule | undefined,
-    rule: Rule | undefined
+    rule: Rule | undefined,
   ): Rule | undefined {
     if (!schemaRule) {
       return rule;
@@ -112,7 +110,6 @@ export class MongooseValidator extends Validator {
   /**
    * Validates a generated value against the mongoose schema rules or validators.
    *
-   * @param path The path or field name to which the value generated.
    * @param value The value to validate.
    * @param schemaType The mongoose schema type to validate the value against.
    *
@@ -121,19 +118,14 @@ export class MongooseValidator extends Validator {
    * @private
    */
   private validateValueBySchema(
-    path: string,
     value: Value | undefined,
-    schemaType: SchemaType
+    schemaType: SchemaType,
   ): void {
-    if (value === undefined && schemaType.isRequired) {
-      throw new Error(`Required field '${path}' is undefined`);
-    }
+    const schemaRule = this.parseValidators(schemaType.validators);
 
-    schemaType.validators.forEach((validator) => {
-      if (!validator?.validator?.(value)) {
-        throw new Error(`Validation failed for field '${path}': ${value}`);
-      }
-    });
+    if (schemaRule) {
+      super.validate(value, schemaRule);
+    }
   }
 
   /**
@@ -150,7 +142,7 @@ export class MongooseValidator extends Validator {
   private checkRequiredRule(schemaRule: Rule, rule: Rule): void {
     if (!!schemaRule.required && rule.required === false) {
       throw new Error(
-        'Forbidden: required field cannot be overridden to be non-required'
+        'Forbidden: required field cannot be overridden to be non-required',
       );
     }
   }
@@ -177,7 +169,7 @@ export class MongooseValidator extends Validator {
   private checkMinMaxRule(
     schemaValue: number | undefined,
     ruleValue: number | undefined,
-    type: 'min' | 'max'
+    type: 'min' | 'max',
   ): void {
     if (schemaValue && ruleValue) {
       const invalidCondition =
@@ -187,7 +179,7 @@ export class MongooseValidator extends Validator {
         throw new Error(
           `Forbidden: ${type} value cannot be overridden to be ${
             type === 'max' ? 'greater' : 'less'
-          } than the schema ${type} value`
+          } than the schema ${type} value`,
         );
       }
     }
@@ -207,14 +199,14 @@ export class MongooseValidator extends Validator {
   private checkEnumValues(schemaRule: Rule, rule: Rule): void {
     if (schemaRule.enum && rule.enum) {
       const invalidEnumValues = rule.enum.filter(
-        (value) => !schemaRule.enum?.includes(value)
+        (value) => !schemaRule.enum?.includes(value),
       );
 
       if (invalidEnumValues.length) {
         throw new Error(
           `Forbidden: enum values cannot be overridden to include values not in the schema enum: ${invalidEnumValues.join(
-            ', '
-          )}`
+            ', ',
+          )}`,
         );
       }
     }

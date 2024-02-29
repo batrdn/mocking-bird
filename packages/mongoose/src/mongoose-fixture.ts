@@ -83,7 +83,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
   override bulkGenerate(
     size: number,
     overrideValues?: Record<FieldPath, Value>,
-    options?: FixtureOptions
+    options?: FixtureOptions,
   ): T[] {
     const combinedOptions = this.preGeneration(overrideValues, options);
 
@@ -92,8 +92,8 @@ export class MongooseFixture<T> extends CoreFixture<T> {
         this.schema as Schema,
         undefined,
         overrideValues,
-        combinedOptions
-      )
+        combinedOptions,
+      ),
     );
   }
 
@@ -119,7 +119,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
    */
   override generate(
     overrideValues?: Record<FieldPath, Value>,
-    options?: FixtureOptions
+    options?: FixtureOptions,
   ): T {
     const combinedOptions = this.preGeneration(overrideValues, options);
 
@@ -127,7 +127,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
       this.schema as Schema,
       undefined,
       overrideValues,
-      combinedOptions
+      combinedOptions,
     );
   }
 
@@ -166,7 +166,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     schemaNode: Schema<T>,
     rootPath: FieldPath | undefined,
     overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): T {
     const generated = {};
 
@@ -183,7 +183,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
         subPath,
         schemaType,
         overrideValues,
-        options
+        options,
       );
 
       Object.assign(generated, { [path]: generatedValue });
@@ -214,14 +214,14 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     path: FieldPath,
     schemaType: SchemaType,
     overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): Value | undefined {
     if (schemaType.schema) {
       return this.generateValueForNestedSchema(
         path,
         schemaType,
         overrideValues,
-        options
+        options,
       );
     }
 
@@ -246,14 +246,14 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     path: FieldPath,
     schemaType: SchemaType,
     overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): Value | undefined {
     if (schemaType.instance === MongooseFixture.NESTED_SCHEMA_INSTANCE) {
       return this.recursivelyGenerateValue(
         schemaType.schema,
         path,
         overrideValues,
-        options
+        options,
       ) as Value;
     }
 
@@ -262,7 +262,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
         path,
         schemaType,
         overrideValues,
-        options
+        options,
       );
     }
 
@@ -287,7 +287,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     path: FieldPath,
     schemaType: SchemaType,
     overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): Value[] {
     const rule = this.pathfinder.findRule(path, options?.rules);
 
@@ -299,8 +299,8 @@ export class MongooseFixture<T> extends CoreFixture<T> {
             schemaType.schema,
             path,
             overrideValues,
-            options
-          ) as Value
+            options,
+          ) as Value,
       );
     }
 
@@ -309,7 +309,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
         schemaType.schema,
         path,
         overrideValues,
-        options
+        options,
       ) as Value,
     ];
   }
@@ -334,7 +334,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     path: FieldPath,
     schemaType: SchemaType,
     overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): Value | undefined {
     const rule = this.pathfinder.findRule(path, options?.rules);
 
@@ -342,7 +342,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
       ? this.overrideValue(path, overrideValues)
       : this.generateMockValue(path, schemaType, rule, options?.isAccurate);
 
-    this.mongooseValidator.validateValue(path, schemaType, value, rule);
+    this.mongooseValidator.validateValue(schemaType, value, rule);
 
     return value;
   }
@@ -365,12 +365,12 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     path: FieldPath,
     schemaType: SchemaType,
     rule: Rule | undefined,
-    isAccurate = true
+    isAccurate = true,
   ): Value | undefined {
     const type = this.typeMapper.getType(schemaType.instance);
 
     const schemaRule = this.mongooseValidator.parseValidators(
-      schemaType.validators
+      schemaType.validators,
     );
 
     if (schemaRule && rule) {
@@ -389,7 +389,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
             fieldName,
             this.typeMapper.getArrayType(caster.instance),
             combinedRule,
-            isAccurate
+            isAccurate,
           )
         : undefined;
     }
@@ -409,7 +409,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
    */
   private overrideValue(
     path: FieldPath,
-    overrideValues: Record<FieldPath, Value> | undefined
+    overrideValues: Record<FieldPath, Value> | undefined,
   ): Value | undefined {
     if (!overrideValues) {
       return undefined;
@@ -418,14 +418,14 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     const overrideValuePatterns = Object.keys(overrideValues);
     const matchingPatterns = this.pathfinder.findPatterns(
       path,
-      overrideValuePatterns
+      overrideValuePatterns,
     );
 
     if (matchingPatterns.length > 1) {
       throw new Error(
         `Forbidden: multiple override values found for path '${path}': ${matchingPatterns.join(
-          ', '
-        )}`
+          ', ',
+        )}`,
       );
     }
 
@@ -450,7 +450,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
    */
   private preGeneration(
     overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): FixtureOptions {
     const extractedPaths = this.extractPaths(overrideValues, options);
     this.pathfinder.validatePaths(extractedPaths);
@@ -478,7 +478,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
   private isExcluded(
     path: FieldPath,
     schemaType: SchemaType,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): boolean {
     // Immediately return true if only required fields are needed and the current field is not required.
     // Also, return true if the current field is the version key (__v).
@@ -514,7 +514,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
    */
   private shouldOverride(
     path: FieldPath,
-    overrideValues: Record<FieldPath, Value> | undefined
+    overrideValues: Record<FieldPath, Value> | undefined,
   ): boolean {
     return (
       !!overrideValues &&
@@ -542,7 +542,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
    */
   private extractPaths(
     overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined
+    options: FixtureOptions | undefined,
   ): FieldPath[] {
     const overridePaths = overrideValues ? Object.keys(overrideValues) : [];
     const excludePaths = options?.exclude || [];
