@@ -2,6 +2,10 @@
   "name": "@mocking-bird/mongoose",
   "version": "1.0.0",
   "private": false,
+  "engines": {
+    "node": ">=18.*",
+    "npm": ">=9.*"
+  },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "nx test @mocking-bird/mongoose"
