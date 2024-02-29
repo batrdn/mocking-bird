@@ -29,6 +29,8 @@ jobs:
         run: npx nx report
       - name: Release packages
         run: npx nx release --skip-publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Publish packages
         run: npx nx release publish
         env:
