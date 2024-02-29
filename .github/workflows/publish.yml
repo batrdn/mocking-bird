@@ -1,36 +1,17 @@
 name: Publish
-
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - '@mocking-bird/**@*.*.*'
-
+  release:
+    types: [published]
 jobs:
-  test:
-    name: Publish
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    timeout-minutes: 10
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
-          fetch-depth: 0
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
-      - name: Install dependencies
-        run: npm install
-        shell: bash
-      - name: Publish packages
-        run: npx nx release publish
-        shell: bash
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
