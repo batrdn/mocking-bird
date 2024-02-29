@@ -1,3 +1,15 @@
+## 1.0.11 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- release ([1b858c8](https://github.com/batrdn/mocking-bird/commit/1b858c8))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.10 (2024-02-29)
 
 
