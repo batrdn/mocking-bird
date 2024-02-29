@@ -1,3 +1,15 @@
+## 1.0.13 (2024-02-29)
+
+
+### 🩹 Fixes
+
+- trigger a release ([babc595](https://github.com/batrdn/mocking-bird/commit/babc595))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.0.12 (2024-02-29)
 
 
