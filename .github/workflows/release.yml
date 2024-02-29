@@ -61,7 +61,8 @@ jobs:
       - name: Download dist
         uses: actions/download-artifact@v3
         with:
-          path: ./dist
+          name: dist
+          path: dist
       - name: Release packages
         run: npx nx release publish
         env:
