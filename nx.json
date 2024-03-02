@@ -7,7 +7,7 @@
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "affected": {
-    "defaultBase": "main"
+    "defaultBase": "origin/main"
   },
   "release": {
     "projects": ["@mocking-bird/core", "@mocking-bird/mongoose"],

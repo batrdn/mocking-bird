@@ -1,7 +1,7 @@
 import { MongoDBContainer } from '@testcontainers/mongodb';
 import * as mongoose from 'mongoose';
 import { MongooseFixture } from '../src';
-import { BasicModel, NestedModel } from './models';
+import { BasicModel, MapModel, NestedModel } from './models';
 
 describe('MongoDB Integration Test', () => {
   beforeAll(async () => {
@@ -49,5 +49,13 @@ describe('MongoDB Integration Test', () => {
 
     const error = nestedDoc.validateSync();
     expect(error).toBeUndefined();
+  });
+
+  // TODO - Fix this test
+  it.skip('should save a document with a complex map type', async () => {
+    const fixture = new MongooseFixture(MapModel);
+    const mockData = fixture.generate();
+
+    expect(await MapModel.create(mockData)).not.toThrow();
   });
 });

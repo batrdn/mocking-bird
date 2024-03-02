@@ -30,7 +30,7 @@ export abstract class CoreFixture<T> {
   protected constructor(
     pathfinder: CorePathFinder,
     typeMapper: CoreTypeMapper,
-    validator?: Validator
+    validator?: Validator,
   ) {
     this.pathfinder = pathfinder;
     this.typeMapper = typeMapper;
@@ -53,7 +53,7 @@ export abstract class CoreFixture<T> {
   abstract bulkGenerate(
     size: number,
     overrideValues?: Record<FieldPath, Value>,
-    options?: FixtureOptions
+    options?: FixtureOptions,
   ): T[];
 
   /**
@@ -66,7 +66,7 @@ export abstract class CoreFixture<T> {
    */
   abstract generate(
     overrideValues?: Record<FieldPath, Value>,
-    options?: FixtureOptions
+    options?: FixtureOptions,
   ): T;
 
   /**
@@ -91,7 +91,7 @@ export abstract class CoreFixture<T> {
     fieldName: string,
     type: NonArrayFieldType,
     rule: Rule | undefined,
-    isAccurate = true
+    isAccurate = true,
   ): Value {
     return this.fakerApi.generate(fieldName, type, rule, isAccurate);
   }
@@ -106,7 +106,8 @@ export abstract class CoreFixture<T> {
    *
    * @param fieldName The name of the field for which the value should be generated.
    * @param type The non array type of the field, i.e., only the based types.
-   * @param rule The rule to be used to generate the value.
+   * @param size The size of the array to be generated.
+   * @param rule The rule to use for the array element.
    * @param isAccurate If set to `true`, the value will be generated with the highest possible accuracy.
    *
    * @returns An array of mock values based on the given field name and type.
@@ -116,12 +117,13 @@ export abstract class CoreFixture<T> {
   protected generateArrayValue(
     fieldName: string,
     type: NonArrayFieldType,
+    size: number | undefined,
     rule: Rule | undefined,
-    isAccurate = true
+    isAccurate = true,
   ): Value[] {
-    if (rule?.size) {
-      return Array.from({ length: rule.size }, () =>
-        this.fakerApi.generate(fieldName, type, rule, isAccurate)
+    if (size) {
+      return Array.from({ length: size }, () =>
+        this.fakerApi.generate(fieldName, type, rule, isAccurate),
       );
     }
 

@@ -1,5 +1,11 @@
 import { MongooseFixture } from '../src';
-import { NestedModel, BasicModel, IBasicDocument } from './models';
+import {
+  NestedModel,
+  BasicModel,
+  IBasicDocument,
+  Authors,
+  AuthorSchema,
+} from './models';
 
 describe('Mocking Bird - Mongoose', () => {
   const assertRequiredFields = (mock: IBasicDocument) => {
@@ -435,6 +441,16 @@ describe('Mocking Bird - Mongoose', () => {
 
       expect(basicMocks).toHaveLength(5);
       expect(nestedMocks).toHaveLength(10);
+    });
+  });
+
+  describe('Schema with enums', () => {
+    it('should generate a mock with the correct enum value', () => {
+      const fixture = new MongooseFixture(AuthorSchema);
+      const { authors } = fixture.generate();
+
+      expect(authors).toHaveLength(1);
+      expect(Object.values(Authors).includes(authors[0])).toBe(true);
     });
   });
 
