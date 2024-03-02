@@ -1,6 +1,6 @@
 {
   "name": "@mocking-bird/mongoose",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -19,7 +19,7 @@
     "mongoose": ">=6"
   },
   "dependencies": {
-    "@mocking-bird/core": "1.0.14",
+    "@mocking-bird/core": "1.0.15",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
