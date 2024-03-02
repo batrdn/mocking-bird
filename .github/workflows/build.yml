@@ -27,15 +27,15 @@ jobs:
         run: npm install
       - name: Format
         run: |
-          UNFORMATTED_FILES=$(npx nx format:check)
+          UNFORMATTED_FILES=$(npm run format:check)
           if [ -n "$UNFORMATTED_FILES" ]; then
             echo "Unformatted files found:"
             echo "$UNFORMATTED_FILES"
             exit 1
           fi
       - name: Lint
-        run: npx nx affected -t lint
+        run: npm run lint
       - name: Build
-        run: npx nx affected -t build
+        run: npm run build
       - name: Test
-        run: npx nx affected -t test
+        run: npm run test
