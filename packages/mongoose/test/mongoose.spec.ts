@@ -444,6 +444,16 @@ describe('Mocking Bird - Mongoose', () => {
     });
   });
 
+  describe('Schema with enums', () => {
+    it('should generate a mock with the correct enum value', () => {
+      const fixture = new MongooseFixture(AuthorSchema);
+      const { authors } = fixture.generate();
+
+      expect(authors).toHaveLength(1);
+      expect(Object.values(Authors).includes(authors[0])).toBe(true);
+    });
+  });
+
   describe('Global options', () => {
     beforeEach(() => {
       MongooseFixture.setGlobalOptions({
@@ -468,16 +478,6 @@ describe('Mocking Bird - Mongoose', () => {
 
       expect(mock.age).toBeDefined();
       expect(mock.email).toBeDefined();
-    });
-  });
-
-  describe('Schema with enums', () => {
-    it('should generate a mock with the correct enum value', () => {
-      const fixture = new MongooseFixture(AuthorSchema);
-      const { authors } = fixture.generate();
-
-      expect(authors).toHaveLength(1);
-      expect(Object.values(Authors).includes(authors[0])).toBe(true);
     });
   });
 });
