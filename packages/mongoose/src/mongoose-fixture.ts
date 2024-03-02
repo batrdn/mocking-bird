@@ -383,7 +383,8 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     if (type === FieldType.ARRAY) {
       // caster is the schema type of the array elements, from which we can get the array type, e.g., String, Number, etc.
       const { caster } = schemaType as Schema.Types.Array;
-      return caster?.instance ? this.generateArrayValue(
+      return caster?.instance
+        ? this.generateArrayValue(
             fieldName,
             this.typeMapper.getArrayType(caster.instance),
             combinedRule?.size,
