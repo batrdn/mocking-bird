@@ -388,7 +388,13 @@ export class MongooseFixture<T> extends CoreFixture<T> {
         ? this.generateArrayValue(
             fieldName,
             this.typeMapper.getArrayType(caster.instance),
-            combinedRule,
+            combinedRule?.size,
+            /**
+             * The parsed rule here is the rule for the array elements.
+             * @example
+             * const schema = new Schema({ values: [type: String, enum: ['A', 'B', 'C']] });
+             */
+            this.mongooseValidator.parseValidators(caster.validators),
             isAccurate,
           )
         : undefined;
