@@ -1,3 +1,15 @@
+## 1.0.15 (2024-03-02)
+
+
+### 🩹 Fixes
+
+- enum rule for array element ([#1](https://github.com/batrdn/mocking-bird/pull/1))
+
+
+### ❤️  Thank You
+
+- Bataa (Bat-Erdene Tsogoo) @batrdn
+
 ## 1.0.14 (2024-02-29)
 
 
