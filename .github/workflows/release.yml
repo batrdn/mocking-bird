@@ -26,11 +26,6 @@ jobs:
         run: npm run build
       - name: Print Environment Info
         run: npx nx report
-      - name: Upload dist
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: dist
       - name: Configure git user
         run: |
           git config --local user.name "${{ github.actor }}"
@@ -39,6 +34,11 @@ jobs:
         run: npx nx release --skip-publish
         env:
           GH_TOKEN: ${{ github.token }}
+      - name: Upload dist
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
   publish:
     name: Publish
     runs-on: ubuntu-latest
