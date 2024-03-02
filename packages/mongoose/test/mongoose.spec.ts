@@ -477,9 +477,7 @@ describe('Mocking Bird - Mongoose', () => {
       const { authors } = fixture.generate();
 
       expect(authors).toHaveLength(1);
-      expect(Object.prototype.hasOwnProperty.call(Authors, authors[0])).toBe(
-        true,
-      );
+      expect(Object.values(Authors).includes(authors[0])).toBe(true);
     });
   });
 });
