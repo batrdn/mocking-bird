@@ -31,6 +31,11 @@
     }
   },
   "targetDefaults": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectName}"
+      }
+    },
     "build": {
       "cache": true,
       "dependsOn": ["^build"]
