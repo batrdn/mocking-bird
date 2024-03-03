@@ -1,3 +1,15 @@
+## 1.1.2 (2024-03-03)
+
+
+### 🩹 Fixes
+
+- release workflow ([a2fa39b](https://github.com/batrdn/mocking-bird/commit/a2fa39b))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.1.1 (2024-03-03)
 
 
