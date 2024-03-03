@@ -1,3 +1,15 @@
+## 1.1.0 (2024-03-03)
+
+
+### 🚀 Features
+
+- **mongoose:** support for map types ([#2](https://github.com/batrdn/mocking-bird/pull/2))
+
+
+### ❤️  Thank You
+
+- Bataa (Bat-Erdene Tsogoo) @batrdn
+
 ## 1.0.15 (2024-03-02)
 
 
