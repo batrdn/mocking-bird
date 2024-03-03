@@ -6,6 +6,13 @@
   "repository": {
     "url": "https://github.com/batrdn/mocking-bird"
   },
+  "keywords": [
+    "mocking-bird",
+    "mongoose",
+    "testing",
+    "mocking",
+    "fixtures"
+  ],
   "author": "batrdn",
   "engines": {
     "node": ">=18.*",
