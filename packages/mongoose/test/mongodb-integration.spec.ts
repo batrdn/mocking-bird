@@ -25,17 +25,21 @@ describe('MongoDB Integration Test', () => {
 
     const savedDocument = await BasicModel.findById(_id).lean().exec();
     const expectedDocument = {
-      ...document,
+      ...savedDocument,
       _id: savedDocument?._id?.toString(),
       idField: savedDocument?.idField?.toString(),
       bigInt: savedDocument?.bigInt?.toString(),
       decimal128: savedDocument?.decimal128?.toString(),
+      binData: savedDocument?.binData?.toString(),
+      uuid: savedDocument?.uuid?.toString(),
     };
 
     expect(expectedDocument).toMatchObject({
       ...document,
       bigInt: document.bigInt?.toString(),
       decimal128: document.decimal128?.toString(),
+      binData: document.binData?.toString(),
+      uuid: document.uuid?.toString(),
     });
   });
 
@@ -51,11 +55,13 @@ describe('MongoDB Integration Test', () => {
     expect(error).toBeUndefined();
   });
 
-  // TODO - Fix this test
-  it.skip('should save a document with a complex map type', async () => {
+  it('should save a document with a complex map type', async () => {
     const fixture = new MongooseFixture(MapModel);
     const mockData = fixture.generate();
 
-    expect(await MapModel.create(mockData)).not.toThrow();
+    const { _id } = await MapModel.create(mockData);
+
+    const savedDocument = await MapModel.findById(_id).lean().exec();
+    expect(savedDocument).toBeDefined();
   });
 });
