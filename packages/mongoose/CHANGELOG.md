@@ -1,3 +1,15 @@
+## 1.1.1 (2024-03-03)
+
+
+### 🩹 Fixes
+
+- add keywords and publish workflow ([1f468fa](https://github.com/batrdn/mocking-bird/commit/1f468fa))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.1.0 (2024-03-03)
 
 
