@@ -1,6 +1,7 @@
 import { BaseFakerModule } from './base-faker-module';
-import { FakerCandidate, FieldType } from '../../types';
+import { FakerCandidate, FieldType, Rule } from '../../types';
 import { faker } from '@faker-js/faker';
+import { FakerHelpers } from '../faker-helpers';
 
 export class PersonModule extends BaseFakerModule {
   private firstName(): FakerCandidate {
@@ -115,6 +116,20 @@ export class PersonModule extends BaseFakerModule {
     };
   }
 
+  private age(): FakerCandidate {
+    return {
+      type: FieldType.NUMBER,
+      method: 'age',
+      callback: (rule: Rule | undefined) =>
+        faker.number.int(
+          FakerHelpers.getMinMaxRule(rule, {
+            min: 18,
+            max: 99,
+          }),
+        ),
+    };
+  }
+
   override toFakerCandidates(): FakerCandidate[] {
     return [
       this.firstName(),
@@ -131,6 +146,7 @@ export class PersonModule extends BaseFakerModule {
       this.jobArea(),
       this.jobType(),
       this.zodiacSign(),
+      this.age(),
     ];
   }
 }

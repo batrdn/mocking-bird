@@ -5,10 +5,16 @@ import { Rule } from '../types';
  * Note: the methods and their return types are specific to faker.js library.
  */
 export class FakerHelpers {
-  static getMinMaxRule(rule: Rule | undefined) {
+  static getMinMaxRule(
+    rule: Rule | undefined,
+    defaultValues?: {
+      min: number;
+      max: number;
+    },
+  ) {
     return {
-      min: rule?.min,
-      max: rule?.max,
+      min: Number.isInteger(rule?.min) ? rule?.min : defaultValues?.min,
+      max: Number.isInteger(rule?.max) ? rule?.max : defaultValues?.max,
     };
   }
 

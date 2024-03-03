@@ -5,6 +5,7 @@ import {
   FieldType,
   FixtureOptions,
   GlobPathFinder,
+  NonArrayFieldType,
   Rule,
   Value,
 } from '@mocking-bird/core';
@@ -34,8 +35,11 @@ import { MongooseValidator } from './mongoose-validator';
 export class MongooseFixture<T> extends CoreFixture<T> {
   private static readonly globalOptions: FixtureOptions = {};
 
+  private static readonly MONGOOSE_SPECIAL_CHARS_REGEX = /[.*$]/g;
+
   private static readonly NESTED_SCHEMA_INSTANCE = 'Embedded';
   private static readonly ARRAY_SCHEMA_INSTANCE = 'Array';
+  private static readonly MAP_SCHEMA_INSTANCE = 'Map';
   private static readonly VERSION_KEY = '__v';
 
   private readonly schema: Schema<T>;
@@ -199,6 +203,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
    * If a field has basic types such as String, Number, etc., it will not have a schema property.
    * Whereas, if a field is an array or an embedded schema, it will have a schema property and will be recursively
    * processed.
+   * Map types are also supported and processed in a special way, as they can be little more complex.
    *
    * @param path The path to the field.
    * @param schemaType The schema type of the field.
@@ -216,6 +221,15 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     overrideValues: Record<FieldPath, Value> | undefined,
     options: FixtureOptions | undefined,
   ): Value | undefined {
+    if (schemaType.instance === MongooseFixture.MAP_SCHEMA_INSTANCE) {
+      return this.generateValueForMapType(
+        path,
+        schemaType,
+        overrideValues,
+        options,
+      );
+    }
+
     if (schemaType.schema) {
       return this.generateValueForNestedSchema(
         path,
@@ -315,6 +329,142 @@ export class MongooseFixture<T> extends CoreFixture<T> {
   }
 
   /**
+   * Generates a value for a map schema.
+   * The types used in the map is separated into three main categories: array, schema and basic types.
+   *
+   * There are four special cases for processing a map:
+   * 1. A map is of an array of schema -> { type: Map, of: [new Schema({ name: String, age: Number })] }
+   * 2. A map is of an array of basic types -> { type: Map, of: [String] }
+   * 3. A map is of a schema type -> { type: Map, of: new Schema({ name: String, age: Number }) }
+   * 4. A map is of a basic type -> { type: Map, of: String }
+   *
+   * @param path The path to the field.
+   * @param schemaType The mongoose schema type of the field.
+   * @param overrideValues Values to override in the schema.
+   * @param options Fixture generation options.
+   *
+   * @returns A key-value pair of mock values. Returns `undefined` if the map type is not defined.
+   *
+   * @private
+   */
+  private generateValueForMapType(
+    path: FieldPath,
+    schemaType: SchemaType,
+    overrideValues: Record<FieldPath, Value> | undefined,
+    options: FixtureOptions | undefined,
+  ): Value | undefined {
+    const { of: mapDefinition } = schemaType.options;
+
+    if (!mapDefinition) {
+      return undefined;
+    }
+
+    // Generate a mock vale for the map key
+    const mapKey = this.generateMapKey();
+
+    let value: Value | Value[] | undefined;
+
+    if (Array.isArray(mapDefinition)) {
+      // 1. processing of array types -> { type: Map, of: [String] } or { type: Map, of: [Schema] }
+      value = this.generateArrayMapValues(
+        mapDefinition[0],
+        path,
+        overrideValues,
+        options,
+      );
+    } else if (mapDefinition instanceof Schema) {
+      // 2. processing of schema type, which is just a nested schema generation
+      value = this.recursivelyGenerateValue(
+        mapDefinition,
+        path,
+        overrideValues,
+        options,
+      ) as Value;
+    } else {
+      // 3. processing of basic map types -> { type: Map, of: String }
+      value = this.generateBasicMapValue(mapDefinition.name);
+    }
+
+    return { [mapKey]: value };
+  }
+
+  /**
+   * Generates a value for an array map type.
+   *
+   * @example
+   * {
+   *  basicArray: [1, 2, 3],
+   *  schemaArray: [{ name: 'John', age: 30 }, { name: 'Jane', age: 25 }],
+   * }
+   *
+   * @param mapDefinition Either based on schema or basic type. If based on basic type, we access the `name` property.
+   * @param path The path to the field.
+   * @param overrideValues Values to override in the schema.
+   * @param options Fixture generation options.
+   *
+   * @returns An array of mock values, either an object of values or primitive values.
+   *
+   * @private
+   */
+  private generateArrayMapValues(
+    mapDefinition: Schema | { name: string },
+    path: FieldPath,
+    overrideValues: Record<FieldPath, Value> | undefined,
+    options: FixtureOptions | undefined,
+  ): Value[] {
+    const rule = this.pathfinder.findRule(path, options?.rules);
+    const size = rule?.size ?? 1; // Default to 1 if size is not specified
+    const isSchema = mapDefinition instanceof Schema;
+
+    return Array.from({ length: size }, () => {
+      if (isSchema) {
+        return this.recursivelyGenerateValue(
+          mapDefinition as Schema,
+          path,
+          overrideValues,
+          options,
+        ) as Value;
+      }
+
+      return this.generateBasicMapValue(mapDefinition.name);
+    });
+  }
+
+  /**
+   * Generates a map value based on the basic type -> { type: Map, of: String }
+   *
+   * @param basicFieldType The basic type of the map value. String, Number, etc.
+   *
+   * @returns A mock value for the map value.
+   *
+   * @private
+   */
+  private generateBasicMapValue(basicFieldType: string): Value {
+    const fieldType = this.typeMapper.getType(
+      basicFieldType,
+    ) as NonArrayFieldType;
+
+    // The field name is irrelevant here, as it will return a random value regardless.
+    return this.generateSingleValue('value', fieldType, undefined, false);
+  }
+
+  /**
+   * Generates a random map value which will be used for the map key.
+   *
+   * @returns A random map key.
+   *
+   * @private
+   */
+  private generateMapKey(): string {
+    return this.generateSingleValue(
+      'mapKey', // The field name is irrelevant here, as it will return a random value regardless.
+      FieldType.STRING,
+      undefined,
+      false,
+    ) as string;
+  }
+
+  /**
    * Generates a value for a field based on the schema type.
    * If a value is provided in the `overrideValues`, it will be used instead of generating a new value.
    * If a `rule` is provided, a value will be generated based on it.
@@ -383,6 +533,7 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     if (type === FieldType.ARRAY) {
       // caster is the schema type of the array elements, from which we can get the array type, e.g., String, Number, etc.
       const { caster } = schemaType as Schema.Types.Array;
+
       return caster?.instance
         ? this.generateArrayValue(
             fieldName,
@@ -486,9 +637,10 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     options: FixtureOptions | undefined,
   ): boolean {
     // Immediately return true if only required fields are needed and the current field is not required.
-    // Also, return true if the current field is the version key (__v).
+    // Also, return true if the current field is the version key (__v) or contains special characters (.$*).
     if (
       path === MongooseFixture.VERSION_KEY ||
+      this.containsSpecialChars(path) ||
       (options?.requiredOnly && !schemaType.isRequired)
     ) {
       return true;
@@ -554,6 +706,19 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     const rulePaths = options?.rules?.map(({ path }) => path) || [];
 
     return [...overridePaths, ...excludePaths, ...rulePaths];
+  }
+
+  /**
+   * Checks if the path contains special characters.
+   *
+   * @param path The path to the field.
+   *
+   * @returns `true` if the path contains special characters, `false` otherwise.
+   *
+   * @private
+   */
+  private containsSpecialChars(path: FieldPath) {
+    return MongooseFixture.MONGOOSE_SPECIAL_CHARS_REGEX.test(path);
   }
 
   /**

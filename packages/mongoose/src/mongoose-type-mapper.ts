@@ -47,8 +47,6 @@ export class MongooseTypeMapper extends CoreTypeMapper {
       case 'bigint':
         return FieldType.BIGINT;
       case 'map':
-        // TODO: support map type
-        throw new Error('Map type is not supported yet.');
       case 'mixed':
       case 'schema':
         return FieldType.OBJECT;
