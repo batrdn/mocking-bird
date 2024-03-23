@@ -1,0 +1,16 @@
+schema:
+  - https://api.cartql.com
+  - ./test/graphql/alternative-schema.graphql
+documents: './test/**/*.graphql'
+generates:
+  ./test/generated/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node
+  ./test/generated/schema.graphql:
+    plugins:
+      - schema-ast
+  ./test/generated/schema.json:
+    plugins:
+      - introspection

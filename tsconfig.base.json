@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@mocking-bird/core": ["packages/core/src/index.ts"],
+      "@mocking-bird/graphql": ["packages/graphql/src/index.ts"],
       "@mocking-bird/mongoose": ["packages/mongoose/src/index.ts"]
     }
   },

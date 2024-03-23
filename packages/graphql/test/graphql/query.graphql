@@ -1,0 +1,110 @@
+query GetCart($id: ID!) {
+  cart(id: $id) {
+    id
+    email
+    totalItems
+    isEmpty
+    abandoned
+    metadata
+    notes
+    createdAt
+    updatedAt
+    subTotal {
+      formatted
+      amount
+    }
+    items {
+      id
+      name
+      description
+      type
+      images
+      unitTotal {
+        amount
+        currency {
+          code
+          symbol
+          thousandsSeparator
+          decimalSeparator
+          decimalDigits
+        }
+        formatted
+      }
+      lineTotal {
+        amount
+      }
+      quantity
+      attributes {
+        key
+        value
+      }
+      metadata
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+fragment ItemFields on CartItem {
+  id
+  name
+  description
+  unitTotal {
+    amount
+    currency {
+      code
+      symbol
+    }
+  }
+}
+
+query GetCartWithFragment($id: ID!) {
+  cart(id: $id) {
+    id
+    items {
+      ...ItemFields
+    }
+  }
+}
+
+fragment CurrencyFragment on Currency {
+  code
+  symbol
+}
+
+fragment UnitTotalFragment on Money {
+  amount
+  currency {
+    ...CurrencyFragment
+  }
+}
+
+query GetCartWithNestedFragment($id: ID!) {
+  cart(id: $id) {
+    items {
+      unitTotal {
+        ...UnitTotalFragment
+      }
+    }
+  }
+}
+
+query GetAllMortalBeings {
+  mortalBeings {
+    __typename
+    ... on Human {
+      id
+      name
+      birth
+      paysTaxes
+      occupation
+    }
+    ... on Animal {
+      id
+      name
+      birth
+      paysTaxes
+      species
+    }
+  }
+}
