@@ -49,9 +49,7 @@ describe('DocumentNodeTransformer', () => {
     const variableNodes = transformer.getTransformedVariableNodes();
 
     const { variables, data } = loadFixture(
-      path.resolve(
-        'test/fixtures/get-cart-with-fragment.json',
-      ),
+      path.resolve('test/fixtures/get-cart-with-fragment.json'),
     );
 
     expect(dataNodes).toEqual(data);

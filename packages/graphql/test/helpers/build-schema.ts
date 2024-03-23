@@ -11,4 +11,3 @@ export const buildGraphQLSchema = (): GraphQLSchema => {
 
   return buildSchema(schemaContent);
 };
-

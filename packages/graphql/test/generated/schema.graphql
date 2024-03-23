@@ -1,4 +1,7 @@
-directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | INTERFACE | OBJECT
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+) on FIELD_DEFINITION | INTERFACE | OBJECT
 
 input AddToCartInput {
   attributes: [CustomAttributeInput]
@@ -18,28 +21,44 @@ input AddToCartInput {
 Addresses are associated with Orders. They can either be shipping or billing addresses.
 """
 type Address {
-  """Use this to keep the city/town name."""
+  """
+  Use this to keep the city/town name.
+  """
   city: String!
 
-  """Use this to keep an optional company name for addresses."""
+  """
+  Use this to keep an optional company name for addresses.
+  """
   company: String
 
-  """Use this to keep the country name."""
+  """
+  Use this to keep the country name.
+  """
   country: String!
 
-  """Use this to keep the first line of the address."""
+  """
+  Use this to keep the first line of the address.
+  """
   line1: String!
 
-  """Use this to keep the apartment, door number, etc."""
+  """
+  Use this to keep the apartment, door number, etc.
+  """
   line2: String
 
-  """Use this to keep the name of the recipient."""
+  """
+  Use this to keep the name of the recipient.
+  """
   name: String!
 
-  """Use this to keep the post/postal/zip code."""
+  """
+  Use this to keep the post/postal/zip code.
+  """
   postalCode: String!
 
-  """Use this to keep the state/county name."""
+  """
+  Use this to keep the state/county name.
+  """
   state: String
 }
 
@@ -85,16 +104,24 @@ type Cart implements Node {
   """
   abandoned: Boolean
 
-  """Custom key/value attributes array for the cart."""
+  """
+  Custom key/value attributes array for the cart.
+  """
   attributes: [CustomCartAttribute!]!
 
-  """The date and time the cart was created."""
+  """
+  The date and time the cart was created.
+  """
   createdAt: Date!
 
-  """The current currency details of the cart."""
+  """
+  The current currency details of the cart.
+  """
   currency: Currency!
 
-  """The customer for the cart"""
+  """
+  The customer for the cart
+  """
   email: String
 
   """
@@ -102,19 +129,29 @@ type Cart implements Node {
   """
   grandTotal: Money!
 
-  """A custom unique identifer for the cart provided by you."""
+  """
+  A custom unique identifer for the cart provided by you.
+  """
   id: ID!
 
-  """A simple helper method to check if the cart is empty."""
+  """
+  A simple helper method to check if the cart is empty.
+  """
   isEmpty: Boolean
 
-  """The items currently in the cart."""
+  """
+  The items currently in the cart.
+  """
   items: [CartItem!]!
 
-  """Custom meta object for the cart"""
+  """
+  Custom meta object for the cart
+  """
   metadata: Json
 
-  """Any notes related to the cart/checkout"""
+  """
+  Any notes related to the cart/checkout
+  """
   notes: String
 
   """
@@ -132,13 +169,19 @@ type Cart implements Node {
   """
   taxTotal: Money!
 
-  """The number of total items in the cart"""
+  """
+  The number of total items in the cart
+  """
   totalItems: Int
 
-  """The number of total unique items in the cart."""
+  """
+  The number of total unique items in the cart.
+  """
   totalUniqueItems: Int
 
-  """The date and time the cart was updated."""
+  """
+  The date and time the cart was updated.
+  """
   updatedAt: Date!
 }
 
@@ -146,40 +189,64 @@ type Cart implements Node {
 A Cart Item is used to store data on the items inside the Cart. There are no strict rules about what you use the named fields for.
 """
 type CartItem {
-  """Custom key/value attributes array for the item."""
+  """
+  Custom key/value attributes array for the item.
+  """
   attributes: [CustomCartAttribute!]!
 
-  """The date and time the item was created."""
+  """
+  The date and time the item was created.
+  """
   createdAt: Date!
 
-  """Description for the item."""
+  """
+  Description for the item.
+  """
   description: String
 
-  """A custom unique identifer for the item provided by you."""
+  """
+  A custom unique identifer for the item provided by you.
+  """
   id: ID!
 
-  """Array of image URLs for the item."""
+  """
+  Array of image URLs for the item.
+  """
   images: [String]
 
-  """Line total (quantity * unit price)."""
+  """
+  Line total (quantity * unit price).
+  """
   lineTotal: Money!
 
-  """Custom metadata for the item."""
+  """
+  Custom metadata for the item.
+  """
   metadata: Json
 
-  """Name for the item."""
+  """
+  Name for the item.
+  """
   name: String
 
-  """Quantity for the item."""
+  """
+  Quantity for the item.
+  """
   quantity: Int!
 
-  """The type of cart item this is."""
+  """
+  The type of cart item this is.
+  """
   type: CartItemType!
 
-  """Unit total for the individual item."""
+  """
+  Unit total for the individual item.
+  """
   unitTotal: Money!
 
-  """The date and time the item was updated."""
+  """
+  The date and time the item was updated.
+  """
   updatedAt: Date!
 }
 
@@ -205,19 +272,29 @@ input CheckoutInput {
 Cart and Cart Items use the currency object to format their unit/line totals.
 """
 type Currency {
-  """The currency code, e.g. USD, GBP, EUR"""
+  """
+  The currency code, e.g. USD, GBP, EUR
+  """
   code: CurrencyCode
 
-  """The decimal places for the currency"""
+  """
+  The decimal places for the currency
+  """
   decimalDigits: Int
 
-  """The decimal separator, e.g. '.'"""
+  """
+  The decimal separator, e.g. '.'
+  """
   decimalSeparator: String
 
-  """The currency smybol, e.g. $, £, €"""
+  """
+  The currency smybol, e.g. $, £, €
+  """
   symbol: String
 
-  """The thousand separator, e.g. ',', '.'"""
+  """
+  The thousand separator, e.g. ',', '.'
+  """
   thousandsSeparator: String
 }
 
@@ -412,11 +489,14 @@ type CustomCartAttribute {
   value: String
 }
 
-""""""
+"""
+"""
 scalar Date
 
 input DeleteCartInput {
-  """The ID of the Cart you wish to delete."""
+  """
+  The ID of the Cart you wish to delete.
+  """
   id: ID!
 }
 
@@ -426,7 +506,9 @@ type DeletePayload {
 }
 
 input EmptyCartInput {
-  """The ID of the Cart you wish to empty."""
+  """
+  The ID of the Cart you wish to empty.
+  """
   id: ID!
 }
 
@@ -438,20 +520,27 @@ type Human implements Being {
   paysTaxes: Boolean!
 }
 
-""""""
+"""
+"""
 scalar Json
 
 """
 The Money type is used when describing the Cart and Cart Item unit/line totals.
 """
 type Money {
-  """The raw amount in cents/pence"""
+  """
+  The raw amount in cents/pence
+  """
   amount: Int
 
-  """The current currency details of the money amount"""
+  """
+  The current currency details of the money amount
+  """
   currency: Currency!
 
-  """The formatted amount with the cart currency."""
+  """
+  The formatted amount with the cart currency.
+  """
   formatted: String!
 }
 
@@ -463,7 +552,9 @@ type Mutation {
   """
   addItem(input: AddToCartInput!): Cart!
 
-  """Use this to convert a cart to an unpaid order."""
+  """
+  Use this to convert a cart to an unpaid order.
+  """
   checkout(input: CheckoutInput!): Order
 
   """
@@ -515,16 +606,24 @@ interface Node {
 Orders are immutable. Once created, you can't change them. The status will automatically reflect the current payment status.
 """
 type Order {
-  """The custom attributes set at checkout"""
+  """
+  The custom attributes set at checkout
+  """
   attributes: [CustomAttribute!]!
 
-  """The orders billing address."""
+  """
+  The orders billing address.
+  """
   billing: Address!
 
-  """The ID of the cart you want to "checkout"."""
+  """
+  The ID of the cart you want to "checkout".
+  """
   cartId: ID!
 
-  """The date and time the order was created."""
+  """
+  The date and time the order was created.
+  """
   createdAt: Date!
 
   """
@@ -538,16 +637,24 @@ type Order {
   grandTotal: Money!
   id: ID!
 
-  """The order items that were in the cart."""
+  """
+  The order items that were in the cart.
+  """
   items: [OrderItem!]!
 
-  """The metadata set at checkout"""
+  """
+  The metadata set at checkout
+  """
   metadata: Json
 
-  """The notes set at checkout."""
+  """
+  The notes set at checkout.
+  """
   notes: String
 
-  """The orders shipping address."""
+  """
+  The orders shipping address.
+  """
   shipping: Address!
 
   """
@@ -570,13 +677,19 @@ type Order {
   """
   taxTotal: Money!
 
-  """The total item count."""
+  """
+  The total item count.
+  """
   totalItems: Int!
 
-  """The total unique item count."""
+  """
+  The total unique item count.
+  """
   totalUniqueItems: Int!
 
-  """The date and time the order status was updated."""
+  """
+  The date and time the order status was updated.
+  """
   updatedAt: Date!
 }
 
@@ -615,10 +728,14 @@ type Query {
 }
 
 input RemoveCartItemInput {
-  """The ID of the Cart in which the CartItem belongs to."""
+  """
+  The ID of the Cart in which the CartItem belongs to.
+  """
   cartId: ID!
 
-  """The ID of the CartItem you wish to remove."""
+  """
+  The ID of the CartItem you wish to remove.
+  """
   id: ID!
 }
 
@@ -662,15 +779,23 @@ input UpdateCartItemInput {
 }
 
 input UpdateItemQuantityInput {
-  """The amount (as Int) you wish to increment the Cart item quantity by."""
+  """
+  The amount (as Int) you wish to increment the Cart item quantity by.
+  """
   by: Int!
 
-  """The ID of the Cart in which the CartItem belongs to."""
+  """
+  The ID of the Cart in which the CartItem belongs to.
+  """
   cartId: ID!
 
-  """The ID of the CartItem you wish to update."""
+  """
+  The ID of the CartItem you wish to update.
+  """
   id: ID!
 }
 
-"""The `Upload` scalar type represents a file upload."""
+"""
+The `Upload` scalar type represents a file upload.
+"""
 scalar Upload
