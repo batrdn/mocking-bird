@@ -1,12 +1,26 @@
 {
   "name": "@mocking-bird/graphql",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "private": false,
+  "license": "MIT",
+  "author": "batrdn",
+  "repository": {
+    "url": "https://github.com/batrdn/mocking-bird"
+  },
+  "keywords": [
+    "mocking-bird",
+    "graphql",
+    "testing",
+    "mocking",
+    "fixtures"
+  ],
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "nx test @mocking-bird/graphql",
     "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@mocking-bird/core": "1.1.2",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {

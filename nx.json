@@ -10,7 +10,7 @@
     "defaultBase": "origin/main"
   },
   "release": {
-    "projects": ["@mocking-bird/core", "@mocking-bird/mongoose"],
+    "projects": ["@mocking-bird/core", "@mocking-bird/mongoose", "@mocking-bird/graphql"],
     "projectsRelationship": "independent",
     "version": {
       "conventionalCommits": true
