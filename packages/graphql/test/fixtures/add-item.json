@@ -338,11 +338,7 @@
           "isRequired": false,
           "isArray": false,
           "isCustomScalar": false,
-          "enumValues": [
-            "SHIPPING",
-            "SKU",
-            "TAX"
-          ]
+          "enumValues": ["SHIPPING", "SKU", "TAX"]
         }
       ]
     }
