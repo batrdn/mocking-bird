@@ -18,7 +18,7 @@ describe('DocumentNodeTransformer', () => {
     const variableNodes = transformer.getTransformedVariableNodes();
 
     const { variables, data } = loadFixture(
-      path.resolve('test/fixtures/get-cart.json'),
+      path.resolve(__dirname, './fixtures/get-cart.json'),
     );
 
     expect(dataNodes).toEqual(data);
@@ -32,7 +32,7 @@ describe('DocumentNodeTransformer', () => {
     const variableNodes = transformer.getTransformedVariableNodes();
 
     const { variables, data } = loadFixture(
-      path.resolve('test/fixtures/add-item.json'),
+      path.resolve(__dirname, './fixtures/add-item.json'),
     );
 
     expect(dataNodes).toEqual(data);
@@ -49,7 +49,7 @@ describe('DocumentNodeTransformer', () => {
     const variableNodes = transformer.getTransformedVariableNodes();
 
     const { variables, data } = loadFixture(
-      path.resolve('test/fixtures/get-cart-with-fragment.json'),
+      path.resolve(__dirname, './fixtures/get-cart-with-fragment.json'),
     );
 
     expect(dataNodes).toEqual(data);
