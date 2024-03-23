@@ -2,61 +2,68 @@
   "variables": [
     {
       "fieldName": "input",
+      "isScalar": false,
+      "isEnum": false,
       "fieldType": "AddToCartInput",
       "isRequired": false,
       "isArray": false,
       "isCustomScalar": false,
-      "isEnum": false,
       "children": [
         {
           "fieldName": "attributes",
+          "isScalar": false,
+          "isEnum": false,
           "fieldType": "CustomAttributeInput",
           "isRequired": false,
           "isArray": false,
           "isCustomScalar": false,
-          "isEnum": false,
           "children": [
             {
               "fieldName": "key",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": true,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "value",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             }
           ]
         },
         {
           "fieldName": "cartId",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "ID",
           "isRequired": true,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "currency",
+          "isScalar": false,
+          "isEnum": false,
           "fieldType": "CurrencyInput",
           "isRequired": false,
           "isArray": false,
           "isCustomScalar": false,
-          "isEnum": false,
           "children": [
             {
               "fieldName": "code",
+              "isScalar": false,
+              "isEnum": true,
               "fieldType": "CurrencyCode",
               "isRequired": false,
               "isArray": false,
               "isCustomScalar": false,
-              "isEnum": true,
               "enumValues": [
                 "AED",
                 "AFN",
@@ -224,102 +231,118 @@
             },
             {
               "fieldName": "decimalDigits",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "Int",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "decimalSeparator",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "symbol",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "thousandsSeparator",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             }
           ]
         },
         {
           "fieldName": "description",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "String",
           "isRequired": false,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "id",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "ID",
           "isRequired": true,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "images",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "String",
           "isRequired": false,
           "isArray": true,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "metadata",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "Json",
           "isRequired": false,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "name",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "String",
           "isRequired": false,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "price",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "Int",
           "isRequired": true,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "quantity",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "Int",
           "isRequired": false,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "type",
+          "isScalar": false,
+          "isEnum": true,
           "fieldType": "CartItemType",
           "isRequired": false,
           "isArray": false,
           "isCustomScalar": false,
-          "isEnum": true,
-          "enumValues": ["SHIPPING", "SKU", "TAX"]
+          "enumValues": [
+            "SHIPPING",
+            "SKU",
+            "TAX"
+          ]
         }
       ]
     }
@@ -327,59 +350,66 @@
   "data": [
     {
       "fieldName": "addItem",
+      "isScalar": false,
+      "isEnum": false,
       "fieldType": "Cart",
       "isRequired": true,
       "isArray": false,
       "isCustomScalar": false,
-      "isEnum": false,
       "children": [
         {
           "fieldName": "id",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "ID",
           "isRequired": true,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "totalItems",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "Int",
           "isRequired": false,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "items",
+          "isScalar": false,
+          "isEnum": false,
           "fieldType": "CartItem",
           "isRequired": true,
           "isArray": true,
           "isCustomScalar": false,
-          "isEnum": false,
           "children": [
             {
               "fieldName": "id",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "ID",
               "isRequired": true,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "name",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "quantity",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "Int",
               "isRequired": true,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             }
           ]
         }

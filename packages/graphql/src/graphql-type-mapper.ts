@@ -13,7 +13,7 @@ export class GraphQLTypeMapper extends CoreTypeMapper {
     'ID',
     'DateTime',
     'Date',
-    'JSON',
+    'Json',
   ];
 
   override getType(type: string): FieldType {
@@ -27,7 +27,7 @@ export class GraphQLTypeMapper extends CoreTypeMapper {
       case 'Boolean':
         return FieldType.BOOLEAN;
       case 'ID':
-        return FieldType.MONGO_DB_ID;
+        return FieldType.UUID;
       case 'DateTime':
       case 'Date':
         return FieldType.DATE;

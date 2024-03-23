@@ -2,93 +2,104 @@
   "variables": [
     {
       "fieldName": "id",
+      "isScalar": true,
+      "isEnum": false,
       "fieldType": "ID",
       "isRequired": true,
       "isArray": false,
-      "isCustomScalar": true,
-      "isEnum": false
+      "isCustomScalar": false
     }
   ],
   "data": [
     {
       "fieldName": "cart",
+      "isScalar": false,
+      "isEnum": false,
       "fieldType": "Cart",
       "isRequired": false,
       "isArray": false,
       "isCustomScalar": false,
-      "isEnum": false,
       "children": [
         {
           "fieldName": "id",
+          "isScalar": true,
+          "isEnum": false,
           "fieldType": "ID",
           "isRequired": true,
           "isArray": false,
-          "isCustomScalar": true,
-          "isEnum": false
+          "isCustomScalar": false
         },
         {
           "fieldName": "items",
+          "isScalar": false,
+          "isEnum": false,
           "fieldType": "CartItem",
           "isRequired": true,
           "isArray": true,
           "isCustomScalar": false,
-          "isEnum": false,
           "children": [
             {
               "fieldName": "id",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "ID",
               "isRequired": true,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "name",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "description",
+              "isScalar": true,
+              "isEnum": false,
               "fieldType": "String",
               "isRequired": false,
               "isArray": false,
-              "isCustomScalar": true,
-              "isEnum": false
+              "isCustomScalar": false
             },
             {
               "fieldName": "unitTotal",
+              "isScalar": false,
+              "isEnum": false,
               "fieldType": "Money",
               "isRequired": true,
               "isArray": false,
               "isCustomScalar": false,
-              "isEnum": false,
               "children": [
                 {
                   "fieldName": "amount",
+                  "isScalar": true,
+                  "isEnum": false,
                   "fieldType": "Int",
                   "isRequired": false,
                   "isArray": false,
-                  "isCustomScalar": true,
-                  "isEnum": false
+                  "isCustomScalar": false
                 },
                 {
                   "fieldName": "currency",
+                  "isScalar": false,
+                  "isEnum": false,
                   "fieldType": "Currency",
                   "isRequired": true,
                   "isArray": false,
                   "isCustomScalar": false,
-                  "isEnum": false,
                   "children": [
                     {
                       "fieldName": "code",
+                      "isScalar": false,
+                      "isEnum": true,
                       "fieldType": "CurrencyCode",
                       "isRequired": false,
                       "isArray": false,
                       "isCustomScalar": false,
-                      "isEnum": true,
                       "enumValues": [
                         "AED",
                         "AFN",
@@ -256,11 +267,12 @@
                     },
                     {
                       "fieldName": "symbol",
+                      "isScalar": true,
+                      "isEnum": false,
                       "fieldType": "String",
                       "isRequired": false,
                       "isArray": false,
-                      "isCustomScalar": true,
-                      "isEnum": false
+                      "isCustomScalar": false
                     }
                   ]
                 }
