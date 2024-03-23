@@ -1,3 +1,15 @@
+## 1.2.1 (2024-03-23)
+
+
+### 🩹 Fixes
+
+- graphql project dist path ([0219180](https://github.com/batrdn/mocking-bird/commit/0219180))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.2.0 (2024-03-23)
 
 
