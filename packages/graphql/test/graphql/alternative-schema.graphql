@@ -1,0 +1,30 @@
+scalar BeforeChristDate
+
+interface Being {
+  id: ID!
+  name: String!
+  birth: BeforeChristDate!
+  paysTaxes: Boolean!
+}
+
+type Human implements Being {
+  id: ID!
+  name: String!
+  birth: BeforeChristDate!
+  paysTaxes: Boolean!
+  occupation: String
+}
+
+type Animal implements Being {
+  id: ID!
+  name: String!
+  birth: BeforeChristDate!
+  paysTaxes: Boolean!
+  species: String
+}
+
+union MortalBeing = Human | Animal
+
+extend type Query {
+  mortalBeings: [MortalBeing!]!
+}

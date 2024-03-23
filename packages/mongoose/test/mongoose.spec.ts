@@ -270,7 +270,7 @@ describe('Mocking Bird - Mongoose', () => {
             ],
           },
         );
-      }).toThrow('Max 1 should be greater than min 18.');
+      }).toThrow('Max 1 should be greater than min 18.'); // Note: the error is thrown from faker.js.
     });
 
     it('should throw an error if min value is greater than the schema max value', () => {
@@ -287,6 +287,23 @@ describe('Mocking Bird - Mongoose', () => {
           },
         );
       }).toThrow('Max 99 should be greater than min 100.');
+    });
+
+    it('should throw an error if custom min and max value rule has conflict', () => {
+      expect(() => {
+        fixture.generate(
+          {},
+          {
+            rules: [
+              {
+                path: 'age',
+                min: 100,
+                max: 1,
+              },
+            ],
+          },
+        );
+      }).toThrow('Max 1 should be greater than min 100.');
     });
   });
 

@@ -554,45 +554,6 @@ export class MongooseFixture<T> extends CoreFixture<T> {
   }
 
   /**
-   * Overrides a value, or to be more specific, returns the override value found in the path.
-   *
-   * @param path The path to the field.
-   * @param overrideValues Values to override in the schema.
-   *
-   * @returns The override value for the field or `undefined` if it does not exist.
-   *
-   * @private
-   */
-  private overrideValue(
-    path: FieldPath,
-    overrideValues: Record<FieldPath, Value> | undefined,
-  ): Value | undefined {
-    if (!overrideValues) {
-      return undefined;
-    }
-
-    const overrideValuePatterns = Object.keys(overrideValues);
-    const matchingPatterns = this.pathfinder.findPatterns(
-      path,
-      overrideValuePatterns,
-    );
-
-    if (matchingPatterns.length > 1) {
-      throw new Error(
-        `Forbidden: multiple override values found for path '${path}': ${matchingPatterns.join(
-          ', ',
-        )}`,
-      );
-    }
-
-    const overrideKey = matchingPatterns[0];
-
-    return Object.prototype.hasOwnProperty.call(overrideValues, overrideKey)
-      ? overrideValues[overrideKey]
-      : undefined;
-  }
-
-  /**
    * Pre-generation routine to validate and extract paths and to set global options.
    *
    * @param overrideValues Values to override in the schema.in the schema
@@ -657,55 +618,6 @@ export class MongooseFixture<T> extends CoreFixture<T> {
     }
 
     return isExist;
-  }
-
-  /**
-   * Checks if a value should be overridden.
-   *
-   * @param path The path to the field.
-   * @param overrideValues Values to override in the schema.
-   *
-   * @returns `true` If a field (path) is found in the `overrideValues`, it should be overridden.
-   *
-   * @private
-   */
-  private shouldOverride(
-    path: FieldPath,
-    overrideValues: Record<FieldPath, Value> | undefined,
-  ): boolean {
-    return (
-      !!overrideValues &&
-      this.pathfinder.exists(path, Object.keys(overrideValues))
-    );
-  }
-
-  /**
-   * Extracts field paths or patterns from `overrideValues` and `options` to be used for validation and generation.
-   *
-   * @remarks
-   *
-   * The `path` values extracted from `options` and `overrideValues` may either be a field path or a pattern.
-   * For example, `address.street` is a field path, and `address.*` is a pattern.
-   * The naming, however, still refers to them as paths for simplicity.
-   *
-   * @see CorePathFinder
-   *
-   * @param overrideValues Values to override in the schema.
-   * @param options Fixture generation options.
-   *
-   * @returns An array of field paths found from `overrideValues` and `options`.
-   *
-   * @private
-   */
-  private extractPaths(
-    overrideValues: Record<FieldPath, Value> | undefined,
-    options: FixtureOptions | undefined,
-  ): FieldPath[] {
-    const overridePaths = overrideValues ? Object.keys(overrideValues) : [];
-    const excludePaths = options?.exclude || [];
-    const rulePaths = options?.rules?.map(({ path }) => path) || [];
-
-    return [...overridePaths, ...excludePaths, ...rulePaths];
   }
 
   /**
