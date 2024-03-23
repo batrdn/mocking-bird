@@ -8,14 +8,15 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/graphql",
+        "outputPath": "dist/@mocking-bird/graphql",
         "main": "packages/graphql/src/index.ts",
         "tsConfig": "packages/graphql/tsconfig.lib.json",
         "assets": ["packages/graphql/*.md"]
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
