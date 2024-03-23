@@ -1,3 +1,15 @@
+## 1.2.0 (2024-03-23)
+
+
+### 🚀 Features
+
+- **graphql:** graphql fixture generation ([#3](https://github.com/batrdn/mocking-bird/pull/3))
+
+
+### ❤️  Thank You
+
+- Bataa (Bat-Erdene Tsogoo) @batrdn
+
 ## 1.1.2 (2024-03-03)
 
 
