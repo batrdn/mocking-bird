@@ -25,6 +25,23 @@ import {
 import { TransformedDocumentNode } from './type';
 import { GraphQLTypeMapper } from './graphql-type-mapper';
 
+/**
+ * ### Overview
+ *
+ * DocumentNodeTransformer transforms GraphQL TypedDocumentNode into a simplified structure that can be used to
+ * generate mock data. The information, such as, whether a field is an array or an enum or a scalar, is extracted
+ * from the GraphQL schema. By traversing the document node via graphql utilities such as visit and
+ * visitWithTypeInfo functions, the transformer collects the necessary information and stores it in a
+ * TransformedDocumentNode structure.
+ *
+ * @remarks
+ * When we transform a GraphQL typed document node, we consider two types of nodes:
+ * - Data nodes: These nodes represent the fields in the query that are used to fetch data.
+ * - Variable nodes: These nodes represent the variables used in the query.
+ *
+ * @typeParam TData - The type of the data node used in the GraphQL query.
+ * @typeParam TVariables - The type of the variables used in the GraphQL query.
+ */
 export class DocumentNodeTransformer<TData, TVariables> {
   private readonly transformedDataNodes: TransformedDocumentNode[];
   private readonly transformedVariableNodes: TransformedDocumentNode[];
@@ -37,6 +54,7 @@ export class DocumentNodeTransformer<TData, TVariables> {
   ) {
     const typeInfo = new TypeInfo(schema);
 
+    // Collect all fragment definitions first, so that fragment spreads can be processed.
     this.collectFragmentDefinitions(documentNode);
 
     this.transformedDataNodes = this.transformDataNodes(documentNode, typeInfo);
@@ -54,6 +72,16 @@ export class DocumentNodeTransformer<TData, TVariables> {
     return this.transformedVariableNodes;
   }
 
+  /**
+   * Transforms graphql fields or data nodes into TransformedDocumentNode.
+   *
+   * @param documentNode The document node to transform
+   * @param typeInfo The type information of the schema
+   *
+   * @returns An array of TransformedDocumentNode
+   *
+   * @private
+   */
   private transformDataNodes(
     documentNode: TypedDocumentNode<TData, TVariables>,
     typeInfo: TypeInfo,
@@ -75,11 +103,17 @@ export class DocumentNodeTransformer<TData, TVariables> {
             );
             transformedFieldNodes.push(transformedNode);
 
+            /**
+             * By default, visit function traverses depth-first. Since we're recursively traversing the tree using
+             * `transformFieldNode` function, visiting only the first level is sufficient. Therefore, we return
+             * false, in order to prevent visiting deeper levels.
+             */
             return false;
           },
         },
         FragmentDefinition: {
           enter: () => {
+            // returning BREAK prevents visiting the node altogether.
             return BREAK;
           },
         },
@@ -89,6 +123,16 @@ export class DocumentNodeTransformer<TData, TVariables> {
     return transformedFieldNodes;
   }
 
+  /**
+   * Transforms graphql variables into TransformedDocumentNode.
+   *
+   * @param documentNode The document node to transform
+   * @param typeInfo The type information of the schema
+   *
+   * @return An array of TransformedDocumentNode
+   *
+   * @private
+   */
   private transformVariableNodes(
     documentNode: TypedDocumentNode<TData, TVariables>,
     typeInfo: TypeInfo,
@@ -120,6 +164,18 @@ export class DocumentNodeTransformer<TData, TVariables> {
     return transformedVariableNodes;
   }
 
+  /**
+   * Recursively transforms a field node into a TransformedDocumentNode.
+   * It also visits FragmentSpread nodes to transform them.
+   *
+   * @param node Single field node to transform
+   * @param rawType The raw type of the field node.
+   * @param typeInfo The type information of the schema
+   *
+   * @returns a single TransformedDocumentNode
+   *
+   * @private
+   */
   private transformFieldNode(
     node: FieldNode,
     rawType: GraphQLOutputType,
@@ -165,6 +221,17 @@ export class DocumentNodeTransformer<TData, TVariables> {
     return this.toTransformedDataNode(node.name.value, rawType, children);
   }
 
+  /**
+   * Resolves fragment spread nodes by transforming them into TransformedDocumentNode.
+   * Fragments may be nested, in which case they are resolved recursively.
+   *
+   * @param node FragmentSpread node to transform
+   * @param typeInfo The type information of the schema
+   *
+   * @return An array of TransformedDocumentNode
+   *
+   * @private
+   */
   private transformFragmentNodes(
     node: FragmentSpreadNode,
     typeInfo: TypeInfo,
@@ -209,6 +276,16 @@ export class DocumentNodeTransformer<TData, TVariables> {
     return transformedNodes;
   }
 
+  /**
+   * Transforms a variable node into a TransformedDocumentNode.
+   *
+   * @param variableNode The variable node to transform
+   * @param rawType The raw type of the variable node.
+   *
+   * @returns A single TransformedDocumentNode
+   *
+   * @private
+   */
   private transformVariableNode(
     variableNode: VariableNode,
     rawType: GraphQLInputType,
@@ -228,6 +305,16 @@ export class DocumentNodeTransformer<TData, TVariables> {
     );
   }
 
+  /**
+   * Recursively resolves nested object input types.
+   *
+   * @param fieldName The name of the field
+   * @param namedType The named input type
+   *
+   * @returns A single TransformedDocumentNode
+   *
+   * @private
+   */
   private resolveInputType(
     fieldName: string,
     namedType: GraphQLNamedInputType,
@@ -259,6 +346,13 @@ export class DocumentNodeTransformer<TData, TVariables> {
     return this.toTransformedDataNode(fieldName, namedType, children);
   }
 
+  /**
+   * Collects all fragment definitions from the document node.
+   *
+   * @param documentNode The document node to traverse
+   *
+   * @private
+   */
   private collectFragmentDefinitions(
     documentNode: TypedDocumentNode<TData, TVariables>,
   ) {
@@ -271,6 +365,23 @@ export class DocumentNodeTransformer<TData, TVariables> {
     });
   }
 
+  /**
+   * Utility function to convert input information into a TransformedDocumentNode.
+   *
+   * @remarks
+   * One noteworthy information is the difference between rawType and namedType:
+   * - rawType: A namedType with the additional information of whether the type is required or an array.
+   * For example: `String!` or `[Number!]!`.
+   * - namedType: A type stripped of the additional information. For example: `String` or `Number`.
+   *
+   * @param fieldName The name of the field
+   * @param rawType The raw type of the field (Either input or output type)
+   * @param children The children of the field
+   *
+   * @returns A single TransformedDocumentNode
+   *
+   * @private
+   */
   private toTransformedDataNode(
     fieldName: string,
     rawType: GraphQLInputType | GraphQLOutputType,
