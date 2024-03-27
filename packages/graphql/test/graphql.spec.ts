@@ -21,11 +21,13 @@ import { FieldType } from '@mocking-bird/core';
 describe('Mocking Bird - GraphQL', () => {
   const schema = buildGraphQLSchema();
 
+  GraphQLFixture.registerSchema(schema);
+
   describe('Mock for Query', () => {
     let fixture: GraphQLFixture<GetCartQuery, GetCartQueryVariables>;
 
     beforeAll(() => {
-      fixture = new GraphQLFixture(schema, GetCartDocument);
+      fixture = new GraphQLFixture(GetCartDocument);
     });
 
     it('should generate mock for query', () => {
@@ -74,17 +76,14 @@ describe('Mocking Bird - GraphQL', () => {
 
   describe('Mock with Fragment', () => {
     it('should generate mock for query with fragment', () => {
-      const fixture = new GraphQLFixture(schema, GetCartWithFragmentDocument);
+      const fixture = new GraphQLFixture(GetCartWithFragmentDocument);
       const mock = fixture.generate();
 
       assertGetCartFragmentQuery(mock);
     });
 
     it('should generate mock for query with nested fragments', () => {
-      const fixture = new GraphQLFixture(
-        schema,
-        GetCartWithNestedFragmentDocument,
-      );
+      const fixture = new GraphQLFixture(GetCartWithNestedFragmentDocument);
 
       const { data } = fixture.generate();
 
@@ -106,7 +105,7 @@ describe('Mocking Bird - GraphQL', () => {
     let fixture: GraphQLFixture<AddItemMutation, AddItemMutationVariables>;
 
     beforeAll(() => {
-      fixture = new GraphQLFixture(schema, AddItemDocument);
+      fixture = new GraphQLFixture(AddItemDocument);
     });
 
     it('should generate mock for mutation', () => {
@@ -124,7 +123,7 @@ describe('Mocking Bird - GraphQL', () => {
   });
 
   describe('Custom Scalar Type', () => {
-    const fixture = new GraphQLFixture(schema, GetAllMortalBeingsDocument);
+    const fixture = new GraphQLFixture(GetAllMortalBeingsDocument);
 
     it('should ignore custom scalars', () => {
       const { data } = fixture.generate({}, { ignoreCustomScalars: true });
@@ -150,7 +149,7 @@ describe('Mocking Bird - GraphQL', () => {
 
   describe('Typename', () => {
     it('should add typename to the result', () => {
-      const fixture = new GraphQLFixture(schema, GetAllMortalBeingsDocument);
+      const fixture = new GraphQLFixture(GetAllMortalBeingsDocument);
       const { data } = fixture.generate({}, { addTypeName: true });
 
       expect(data.__typename).toBe('MortalBeing');
@@ -161,7 +160,7 @@ describe('Mocking Bird - GraphQL', () => {
     let fixture: GraphQLFixture<GetCartQuery, GetCartQueryVariables>;
 
     beforeAll(() => {
-      fixture = new GraphQLFixture(schema, GetCartDocument);
+      fixture = new GraphQLFixture(GetCartDocument);
     });
 
     it('should create a mock based on regex pattern', () => {

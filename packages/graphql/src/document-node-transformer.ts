@@ -52,6 +52,10 @@ export class DocumentNodeTransformer<TData, TVariables> {
     schema: GraphQLSchema,
     documentNode: TypedDocumentNode<TData, TVariables>,
   ) {
+    if (!schema) {
+      throw new Error('Schema is required to transform the document node.');
+    }
+
     const typeInfo = new TypeInfo(schema);
 
     // Collect all fragment definitions first, so that fragment spreads can be processed.

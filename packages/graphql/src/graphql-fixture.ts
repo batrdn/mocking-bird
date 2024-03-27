@@ -18,29 +18,62 @@ import {
 import { DocumentNodeTransformer } from './document-node-transformer';
 import { TreeHelper } from './tree-helpers';
 
+/**
+ * ### Overview
+ *
+ * GraphQLFixture is a concrete class that extends CoreFixture and is responsible for generating mock data for
+ * GraphQL queries and mutations.
+ *
+ * @typeParam TVariables The variables that are passed to the query or mutation.
+ * @typeParam TData The data that is returned by the query or mutation, i.e., the body of the response.
+ *
+ * @example
+ * const fixture = new GraphQLFixture(schema, GetQueryDocument);
+ * const result = fixture.generate();
+ */
 export class GraphQLFixture<TData, TVariables> extends CoreFixture<
   GraphQLFixtureResult<TData, TVariables>
 > {
   private static readonly globalOptions: GraphQLFixtureOptions = {};
+  private static globalSchema: GraphQLSchema;
 
   private readonly transformer: DocumentNodeTransformer<TData, TVariables>;
 
+  constructor(documentNode: TypedDocumentNode<TData, TVariables>);
+
   constructor(
-    schema: GraphQLSchema,
     documentNode: TypedDocumentNode<TData, TVariables>,
+    schema?: GraphQLSchema,
   ) {
     const pathfinder = new GlobPathFinder();
     const typeMapper = new GraphQLTypeMapper();
 
     super(pathfinder, typeMapper);
 
-    this.transformer = new DocumentNodeTransformer(schema, documentNode);
+    this.transformer = new DocumentNodeTransformer(
+      schema ?? GraphQLFixture.globalSchema,
+      documentNode,
+    );
   }
 
   static setGlobalOptions(options: GraphQLFixtureOptions): void {
     Object.assign(GraphQLFixture.globalOptions, options);
   }
 
+  static registerSchema(schema: GraphQLSchema): void {
+    GraphQLFixture.globalSchema = schema;
+  }
+
+  /**
+   * Generates an array of mock data based on the provided document node.
+   *
+   * @inheritDoc
+   *
+   * @typeParam TData The data that is returned by the query or mutation, i.e., the body of the response.
+   * @typeParam TVariables The variables that are passed to the query or mutation.
+   *
+   * @public
+   */
   override bulkGenerate(
     size: number,
     overrideValues?: Record<FieldPath, Value> | undefined,
@@ -53,6 +86,17 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     );
   }
 
+  /**
+   * Generates mock data based on the provided document node.
+   *
+   * @inheritDoc
+   *
+   * @typeParam TData The data that is returned by the query or mutation, i.e., the body of the response.
+   * @typeParam TVariables The variables that are passed to the query or mutation.
+   *
+   * @public
+   *
+   */
   override generate(
     overrideValues?: Record<FieldPath, Value> | undefined,
     options?: GraphQLFixtureOptions | undefined,
@@ -62,6 +106,16 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     return this.generateMock(overrideValues, combinedOptions);
   }
 
+  /**
+   * Generates a mock data for both query/mutation variables and response data.
+   *
+   * @param overrideValues The values to override the generated mock data.
+   * @param options The options to customize the generation of mock data.
+   *
+   * @returns The generated mock data for both query/mutation variables and response data.
+   *
+   * @private
+   */
   private generateMock(
     overrideValues: Record<FieldPath, Value> | undefined,
     options: GraphQLFixtureOptions | undefined,
@@ -91,8 +145,23 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     };
   }
 
+  /**
+   * Recursively generates a value for a given document node.
+   *
+   * @param transformedDocumentNodes An array of transformed document nodes.
+   * @param rootPath The root path of the document node. If undefined, it's considered to be the root.
+   * @param overrideValues The values to override the generated mock data.
+   * @param options The options to customize the generation of mock data.
+   * @param generatedValues The stored generated values, from which field relations are resolved.
+   *
+   * @typeParam T The type of the generated value, which is either TVariables or TData.
+   *
+   * @return The generated value for the document node.
+   *
+   * @private
+   */
   private recursivelyGenerateValue<T>(
-    transformedDocumentNode: TransformedDocumentNode[],
+    transformedDocumentNodes: TransformedDocumentNode[],
     rootPath: FieldPath | undefined,
     overrideValues: Record<FieldPath, Value> | undefined,
     options: GraphQLFixtureOptions | undefined,
@@ -100,7 +169,7 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
   ): T {
     const generated = {};
 
-    transformedDocumentNode.forEach((node) => {
+    transformedDocumentNodes.forEach((node) => {
       const subPath = rootPath
         ? this.pathfinder.createPath(rootPath, node.fieldName)
         : node.fieldName;
@@ -109,11 +178,12 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
         return;
       }
 
-      const relatedPath = this.findRelatedPath(
+      const relatedPath = this.findFieldRelations(
         subPath,
         options?.fieldRelations,
       );
 
+      // If the related path is found in the field relations, the generated value is taken from the generated values.
       if (relatedPath && generatedValues[relatedPath] !== undefined) {
         Object.assign(generated, {
           [node.fieldName]: generatedValues[relatedPath],
@@ -131,6 +201,7 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
 
       Object.assign(generatedValues, { [subPath]: generatedValue });
 
+      // If addTypeName is set to true, add the __typename field to the generated value.
       if (options?.addTypeName && !node.isScalar) {
         Object.assign(generated, { __typename: node.fieldType });
       }
@@ -141,6 +212,19 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     return generated as T;
   }
 
+  /**
+   * Generates a value for a given document node.
+   *
+   * @param node The transformed document node.
+   * @param path The path of the document node.
+   * @param overrideValues The values to override the generated mock data.
+   * @param options The options to customize the generation of mock data.
+   * @param generatedValues The stored generated values, from which field relations are resolved.
+   *
+   * @returns The generated value for the document node.
+   *
+   * @private
+   */
   private generateValueForDocumentNode(
     node: TransformedDocumentNode,
     path: FieldPath,
@@ -161,6 +245,19 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     return this.generateValue(node, path, overrideValues, options);
   }
 
+  /**
+   * Generates a value for a nested document node.
+   *
+   * @param node The transformed document node.
+   * @param path The path of the document node.
+   * @param overrideValues The values to override the generated mock data.
+   * @param options The options to customize the generation of mock data.
+   * @param generatedValues The stored generated values, from which field relations are resolved.
+   *
+   * @returns The generated value for the nested document node.
+   *
+   * @private
+   */
   private generateValueForNestedDocumentNode(
     node: TransformedDocumentNode,
     path: FieldPath,
@@ -187,13 +284,26 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     );
   }
 
+  /**
+   * Generates a value for a document node, which is of an array type.
+   *
+   * @param node The transformed document node.
+   * @param path The path of the document node.
+   * @param overrideValues The values to override the generated mock data.
+   * @param options The options to customize the generation of mock data.
+   * @param generatedValues The stored generated values, from which field relations are resolved.
+   *
+   * @returns An array of generated values for the document node.
+   *
+   * @private
+   */
   private generateValueForArrayDocumentNode(
     node: TransformedDocumentNode,
     path: FieldPath,
     overrideValues: Record<FieldPath, Value> | undefined,
     options: GraphQLFixtureOptions | undefined,
     generatedValues: Record<FieldPath, Value>,
-  ): Value | undefined {
+  ): Value[] | undefined {
     const rule = this.pathfinder.findRule(path, options?.rules);
 
     if (rule?.size) {
@@ -219,6 +329,19 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     ];
   }
 
+  /**
+   * A function that abstracts the generation of a single value.
+   * If override values are found, returns the overridden value.
+   *
+   * @param node The transformed document node.
+   * @param path The path of the document node.
+   * @param overrideValues The values to override the generated mock data.
+   * @param options The options to customize the generation of mock data.
+   *
+   * @returns The generated/overridden value for the document node.
+   *
+   * @private
+   */
   private generateValue(
     node: TransformedDocumentNode,
     path: FieldPath,
@@ -232,12 +355,25 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
       : this.generateMockValue(node, path, rule, options);
   }
 
+  /**
+   * Generates a single value for a document node.
+   *
+   * @param node The transformed document node.
+   * @param path The path of the document node.
+   * @param rule The rule and constraint to be used for the document node.
+   * @param options The options to customize the generation of mock data.
+   *
+   * @returns The generated value for the document node.
+   *
+   * @private
+   */
   private generateMockValue(
     node: TransformedDocumentNode,
     path: FieldPath,
     rule: Rule | undefined,
     options: GraphQLFixtureOptions | undefined,
   ): Value | undefined {
+    // GraphQL enums are treated as strings. The enum values are inserted as rule in combineRules.
     const type = node.isEnum
       ? FieldType.STRING
       : this.typeMapper.getType(node.fieldType);
@@ -254,6 +390,7 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
       );
     }
 
+    // If the field is a custom scalar, the scalar definition is used to generate the value.
     if (node.isCustomScalar && options?.scalarDefinitions?.[node.fieldType]) {
       const { defaultValue, type } = options.scalarDefinitions[node.fieldType];
 
@@ -275,7 +412,17 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     );
   }
 
-  private findRelatedPath(
+  /**
+   * Finds field relations, if any, for a given path.
+   *
+   * @param currentPath The current path to find the field relations for.
+   * @param fieldRelations The field relations to search for the current path.
+   *
+   * @returns The related path, if found.
+   *
+   * @private
+   */
+  private findFieldRelations(
     currentPath: FieldPath,
     fieldRelations?:
       | Record<FieldPath, FieldPath>
@@ -287,6 +434,7 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
 
     let relatedPath: FieldPath | undefined;
 
+    // the `data` prefix is used as a root path for the field relations.
     const pathToFind = `data.${currentPath}`;
 
     Object.entries(fieldRelations).forEach(([sourcePath, targetPath]) => {
@@ -308,6 +456,17 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     return relatedPath;
   }
 
+  /**
+   * Combines the custom rule and certain properties in the transformed document node.
+   *
+   * @param node The transformed document node.
+   * @param path The path of the document node.
+   * @param rule The custom rule to be combined with the properties of the document node.
+   *
+   * @returns The combined rule.
+   *
+   * @private
+   */
   private combineRules(
     node: TransformedDocumentNode,
     path: FieldPath,
@@ -328,6 +487,17 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     return Object.assign({}, rule, combinedRule);
   }
 
+  /**
+   * Checks if a value should be excluded for generation
+   *
+   * @param node The transformed document node.
+   * @param path The path of the document node.
+   * @param options The options to customize the generation of mock data.
+   *
+   * @returns True if the value should be excluded, false otherwise.
+   *
+   * @private
+   */
   private isExcluded(
     node: TransformedDocumentNode,
     path: FieldPath,
@@ -353,6 +523,19 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     return excluded;
   }
 
+  /**
+   * The preparation step for generating mock data by:
+   *
+   * - Validates the paths extracted from the override values and options.
+   * - Merges the global options with the provided options.
+   *
+   * @param overrideValues The values to override the generated mock data.
+   * @param options The options to customize the generation of mock data.
+   *
+   * @returns The combined options.
+   *
+   * @private
+   */
   private preGeneration(
     overrideValues: Record<FieldPath, Value> | undefined,
     options: GraphQLFixtureOptions | undefined,
