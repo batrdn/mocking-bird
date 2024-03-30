@@ -1,3 +1,15 @@
+## 1.2.1 (2024-03-30)
+
+
+### 🩹 Fixes
+
+- release packages with updated documentation ([a76f22f](https://github.com/batrdn/mocking-bird/commit/a76f22f))
+
+
+### ❤️  Thank You
+
+- batrdn
+
 ## 1.2.0 (2024-03-23)
 
 

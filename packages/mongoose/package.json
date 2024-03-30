@@ -26,7 +26,7 @@
     "mongoose": ">=6"
   },
   "dependencies": {
-    "@mocking-bird/core": "1.2.0",
+    "@mocking-bird/core": "1.2.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
