@@ -18,7 +18,6 @@ graphql fixture consists of two different data types:
 - [Options](#options)
 - [Resolving paths](#resolving-paths)
 - [Overriding values](#overriding-values)
-- [Schema rules](#schema-rules)
 
 # Installation
 
