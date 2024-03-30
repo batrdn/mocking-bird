@@ -193,9 +193,10 @@ const fixture = new GraphQLFixture(GetQueryDocument, {
   },
 });
 ```
-> Note: if you are matching fields, you should use the `variables` and `data` prefixes to the field path. 
 
-In this example, generated mock variable `user.id` will be assigned to the generated mock data `user.id`. This makes 
+> Note: if you are matching fields, you should use the `variables` and `data` prefixes to the field path.
+
+In this example, generated mock variable `user.id` will be assigned to the generated mock data `user.id`. This makes
 sense because the `id` field in the variables and data should be the same.
 
 # Resolving paths
