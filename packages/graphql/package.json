@@ -1,6 +1,6 @@
 {
   "name": "@mocking-bird/graphql",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "private": false,
   "license": "MIT",
   "author": "batrdn",
@@ -20,7 +20,7 @@
     "codegen": "graphql-codegen"
   },
   "dependencies": {
-    "@mocking-bird/core": "1.2.0",
+    "@mocking-bird/core": "1.2.1",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
