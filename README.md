@@ -13,7 +13,17 @@ generated in a way that it's suitable for the fields and constraints of your mod
 For example, if you have a field
 `workEmail` in your model, the generated data will be a valid email address, and not just a random string.
 
-# Example
+# Packages
+
+Mocking Bird is a package-based repo using [Nx](https://nx.dev/). To see how individual packages work in detail, please refer to the respective READMEs.
+
+- [@mocking-bird/core](./packages/core)
+- [@mocking-bird/mongoose](./packages/mongoose/README.md)
+- [@mocking-bird/graphql](./packages/graphql/README.md)
+
+To contribute to the project with a new package, please refer to the [contribution guidelines](CONTRIBUTING.md).
+
+# Examples
 
 ### Mongoose Fixture
 
@@ -59,15 +69,37 @@ const data = fixture.generate();
 }
 ```
 
-# Packages
+### GraphQL Fixture
 
-Mocking Bird is a package-based repo using [Nx](https://nx.dev/). At the moment, only `mongoose` fixture generations
-are supported. To see how individual packages work in detail, please refer to the respective READMEs.
+```typescript
+import { GraphQLFixture } from '@mocking-bird/graphql';
+import { GraphQLSchema } from 'graphql';
 
-- [@mocking-bird/core](./packages/core)
-- [@mocking-bird/mongoose](./packages/mongoose/README.md)
+const typeDefs = `
+  type User {
+    name: String
+    email: String
+    age: Int
+    workEmail: String
+    address: Address
+    createdAt: Date
+    updatedAt: Date
+  }
 
-To contribute to the project with a new package, please refer to the [contribution guidelines](CONTRIBUTING.md).
+  type Address {
+    street: String
+    city: String
+    country: String
+  }
+`;
+
+GraphQLSchema.registerSchema(typeDefs);
+
+// TypedDocumentNode is a fully typed graphql document node
+// For more information: https://github.com/dotansimha/graphql-typed-document-node
+const fixture = new GraphQLFixture(TypedDocumentNode);
+const data = fixture.generate();
+```
 
 # Running tests
 
@@ -83,20 +115,6 @@ Alternatively, you could directly use `nx` to run the tests.
 npx nx affected -t test --parallel
 npx nx run-many --target=test --all
 ```
-
-# Roadmap
-
-- [x] Core fixture generation
-- [x] Mongoose fixture generation
-- [ ] GraphQL fixture generation
-- [ ] Mikro ORM fixture generation
-- [ ] Optimize performance for massive data generation
-- [ ] Locale support
-
-# Contributing
-
-This project is relatively new, and your contributions are most definitely welcome 🤙!
-To contribute to the project, please refer to the [contribution guidelines](CONTRIBUTING.md).
 
 # License
 

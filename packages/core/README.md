@@ -1,6 +1,6 @@
 # Core
 
-> Do not install as a package, use `@mocking-bird/mongoose` directly.
+> Do not install as a package, use `@mocking-bird/mongoose` or `@mocking-bird/graphql` directly.
 
 The core module contains the abstract class definitions and overall the base functionalities used for fixture
 generations. New packages may extend the core module to create their own fixture generation logic.

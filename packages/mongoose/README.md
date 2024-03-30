@@ -1,6 +1,6 @@
 # Mongoose Fixture
 
-Generates fixtures for `mongoose`. Simply provide the schema or model, and it will generate mock data
+Mongoose fixture generation library. Simply provide the schema or model, and it will generate mock data
 based on the types and constraints of the schema.
 
 # Table of contents

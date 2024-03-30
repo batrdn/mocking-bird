@@ -3,10 +3,8 @@ import {
   FixtureOptions,
   NonArrayFieldType,
 } from '@mocking-bird/core';
-import { GraphQLSchema } from 'graphql';
 
 export interface GraphQLFixtureOptions extends FixtureOptions {
-  schema?: GraphQLSchema;
   ignoreCustomScalars?: boolean;
   addTypeName?: boolean;
   scalarDefinitions?: Record<string, ScalarDefinition>;

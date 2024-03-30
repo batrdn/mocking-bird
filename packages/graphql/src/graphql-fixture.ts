@@ -17,6 +17,9 @@ import {
 } from './type';
 import { DocumentNodeTransformer } from './document-node-transformer';
 import { TreeHelper } from './tree-helpers';
+import { buildSchema } from 'graphql/utilities';
+import { readFileSync } from 'node:fs';
+import * as path from 'node:path';
 
 /**
  * ### Overview
@@ -60,8 +63,21 @@ export class GraphQLFixture<TData, TVariables> extends CoreFixture<
     Object.assign(GraphQLFixture.globalOptions, options);
   }
 
-  static registerSchema(schema: GraphQLSchema): void {
+  static registerSchema(schema: GraphQLSchema | string): void {
+    if (typeof schema === 'string') {
+      GraphQLFixture.globalSchema = buildSchema(schema);
+      return;
+    }
     GraphQLFixture.globalSchema = schema;
+  }
+
+  static registerSchemaFromFile(schemaPath: string): void {
+    const schemaContent = readFileSync(
+      path.resolve(__dirname, schemaPath),
+      'utf-8',
+    );
+
+    GraphQLFixture.globalSchema = buildSchema(schemaContent);
   }
 
   /**
